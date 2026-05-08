@@ -691,12 +691,12 @@ body{font-family:'Noto Sans KR',sans-serif;font-size:var(--font-base);background
 </div>
 
 <script>
-// 캡쳐 방지
-document.addEventListener('keydown',e=>{
-  if(e.key==='PrintScreen'||(e.ctrlKey&&e.key==='p')||(e.ctrlKey&&e.shiftKey&&e.key==='S')){e.preventDefault();showCap();}
-});
-document.addEventListener('keyup',e=>{if(e.key==='PrintScreen')showCap();});
-document.addEventListener('visibilitychange',()=>{if(document.hidden)showCap();});
+// 캡쳐 방지 (개발 완료 후 아래 주석 해제)
+// document.addEventListener('keydown',e=>{
+//   if(e.key==='PrintScreen'||(e.ctrlKey&&e.key==='p')||(e.ctrlKey&&e.shiftKey&&e.key==='S')){e.preventDefault();showCap();}
+// });
+// document.addEventListener('keyup',e=>{if(e.key==='PrintScreen')showCap();});
+// document.addEventListener('visibilitychange',()=>{if(document.hidden)showCap();});
 function showCap(){const el=document.getElementById('cap-block');el.style.display='flex';setTimeout(()=>{el.style.display='none';},2000);}
 
 // 화면 전환
