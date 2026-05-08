@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Master</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@media print{body{display:none!important}}
+:root{
+  --bg:#f4f4f6;--white:#fff;--dark:#1a1a2e;--mid:#4a4a6a;--muted:#9090b0;
+  --border:#e4e4ee;--gold:#f5a623;--gold-bg:#fff8ed;
+  --green:#27ae60;--green-bg:#eafaf1;
+  --red:#e74c3c;--red-bg:#fdf0ee;
+  --blue:#2980b9;--blue-bg:#eef6fd;
+  --purple:#8b5cf6;--purple-bg:#f3f0ff;
+  --font-base:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans KR',sans-serif;font-size:var(--font-base);background:var(--bg);min-height:100vh;color:var(--dark);user-select:none;-webkit-user-select:none;}
+#cap-block{display:none;position:fixed;inset:0;background:#000;z-index:99999;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
+.top-bar{background:var(--white);border-bottom:1px solid var(--border);padding:16px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.back-btn{width:40px;height:40px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;transition:all .2s;}
+.back-btn:hover{background:var(--bg);}
+.top-title{font-size:18px;font-weight:700;}
+.top-sub{font-size:13px;color:var(--muted);}
+.step-badge{margin-left:auto;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;font-family:'DM Mono',monospace;}
+.content{flex:1;padding:20px;max-width:700px;width:100%;margin:0 auto;}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:16px 24px;border-radius:14px;border:none;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;width:100%;transition:all .2s;}
+.btn-dark{background:var(--dark);color:#fff;}
+.btn-dark:hover{background:#2d2d4e;transform:translateY(-1px);}
+.btn-outline{background:var(--white);color:var(--dark);border:1.5px solid var(--border);}
+.spacer{height:20px;}
+.prog-bar{height:4px;background:var(--border);}
+.prog-fill{height:100%;border-radius:2px;transition:width .4s;}
+
+/* ── 로그인 ── */
+#screen-login{background:linear-gradient(160deg,#1a1a2e,#0f3460);align-items:center;justify-content:center;padding:40px 20px;}
+.login-wrap{width:100%;max-width:400px;}
+.login-logo{text-align:center;margin-bottom:28px;}
+.login-logo h1{color:#fff;font-size:30px;font-weight:900;letter-spacing:-0.5px;}
+.login-logo p{color:rgba(255,255,255,.4);font-size:14px;margin-top:6px;}
+.login-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:26px 22px;}
+.field{margin-bottom:14px;}
+.field label{display:block;color:rgba(255,255,255,.5);font-size:12px;margin-bottom:6px;}
+.field input,.field select{width:100%;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.15);border-radius:11px;padding:12px 15px;color:#fff;font-size:14px;font-family:'Noto Sans KR',sans-serif;outline:none;transition:border-color .2s;-webkit-appearance:none;}
+.field input:focus,.field select:focus{border-color:var(--gold);}
+.field input::placeholder{color:rgba(255,255,255,.25);}
+.field select option{background:#1a1a2e;}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#e07030);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:700;font-family:'Noto Sans KR',sans-serif;cursor:pointer;margin-top:8px;transition:all .2s;}
+.login-btn:hover{transform:translateY(-2px);}
+.teacher-link{text-align:center;margin-top:14px;color:rgba(255,255,255,.3);font-size:13px;cursor:pointer;text-decoration:underline;}
+.teacher-link:hover{color:rgba(255,255,255,.6);}
+
+/* ── 메인 ── */
+#screen-main{background:var(--bg);}
+.main-hero{background:linear-gradient(135deg,var(--dark),#2d2d4e);padding:26px 20px 22px;color:#fff;}
+.main-hero .hi{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:4px;}
+.main-hero h1{font-size:22px;font-weight:900;}
+.rank-badge{display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:10px 16px;cursor:pointer;transition:all .2s;}
+.rank-badge:hover{background:rgba(255,255,255,.14);}
+.rank-badge .rm{font-size:18px;}
+.rank-badge .rt{font-size:13px;color:rgba(255,255,255,.6);}
+.rank-badge .rn{font-size:15px;font-weight:900;font-family:'DM Mono',monospace;}
+.rank-badge .ra{font-size:12px;color:rgba(255,255,255,.3);margin-left:2px;}
+
+/* 랭킹 모달 */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal-box{background:var(--white);border-radius:24px 24px 0 0;padding:22px 20px 36px;width:100%;max-width:480px;}
+.modal-handle{width:38px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px;}
+.modal-title{font-size:17px;font-weight:900;margin-bottom:3px;}
+.modal-sub{font-size:12px;color:var(--muted);margin-bottom:18px;}
+.rank-table{background:var(--white);border:1px solid var(--border);border-radius:13px;overflow:hidden;}
+.rrow{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
+.rrow:last-child{border-bottom:none;}
+.rrow.me{background:var(--gold-bg);}
+.rpos{font-size:14px;font-weight:900;font-family:'DM Mono',monospace;width:26px;text-align:center;}
+.rname{flex:1;font-size:14px;font-weight:500;}
+.rscore{font-size:13px;font-family:'DM Mono',monospace;color:var(--muted);}
+.rmedal{font-size:16px;}
+.modal-close{width:100%;padding:13px;background:var(--dark);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:'Noto Sans KR',sans-serif;cursor:pointer;margin-top:18px;}
+
+/* ── 교재/챕터/유닛 ── */
+.sec-label{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin:18px 0 10px;}
+.book-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;}
+.book-chip{flex-shrink:0;padding:9px 18px;border-radius:20px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;}
+.book-chip.on{background:var(--dark);color:#fff;border:1.5px solid var(--dark);}
+.book-chip.off{background:var(--white);color:var(--mid);border:1.5px solid var(--border);}
+
+/* Chapter 카드 */
+.ch-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:10px;transition:box-shadow .2s;}
+.ch-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.07);}
+
+/* Chapter 헤더 행 */
+.ch-head{display:flex;align-items:center;padding:14px 16px;gap:10px;}
+.ch-toggle{flex:1;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0;}
+.ch-num{width:34px;height:34px;background:var(--dark);color:#fff;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'DM Mono',monospace;flex-shrink:0;}
+.ch-info{min-width:0;}
+.ch-info h3{font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ch-info p{font-size:13px;color:var(--muted);margin-top:2px;}
+.ch-arrow{color:var(--muted);font-size:18px;transition:transform .2s;flex-shrink:0;}
+.ch-card.open .ch-arrow{transform:rotate(90deg);}
+
+/* Chapter 액션 버튼들 */
+.ch-actions{display:flex;gap:6px;margin-left:auto;flex-shrink:0;}
+.ch-action-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 12px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif;}
+.ch-action-btn:hover:not(.locked-btn){transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.1);}
+.ch-action-btn .ab-icon{font-size:18px;}
+.ch-action-btn .ab-label{font-size:12px;font-weight:700;white-space:nowrap;}
+.ch-action-btn.voice-btn{border-color:#c4b5fd;background:var(--purple-bg);}
+.ch-action-btn.voice-btn .ab-label{color:var(--purple);}
+.ch-action-btn.note-btn{border-color:#6ee7b7;background:var(--green-bg);}
+.ch-action-btn.note-btn .ab-label{color:var(--green);}
+.ch-action-btn.locked-btn{opacity:.4;cursor:not-allowed;background:var(--bg);border-color:var(--border);}
+.ch-action-btn.locked-btn .ab-label{color:var(--muted);}
+
+/* Unit 목록 */
+.unit-list{border-top:1px solid var(--border);}
+
+/* Unit 행 */
+.unit-row{display:flex;align-items:center;padding:13px 16px;border-bottom:1px solid var(--border);gap:10px;background:var(--white);}
+.unit-row:last-child{border-bottom:none;}
+.unit-row.locked-unit{opacity:.45;}
+.udot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.udot.done{background:var(--green);}
+.udot.active{background:var(--gold);}
+.udot.none{background:var(--border);}
+.uname{font-size:15px;font-weight:500;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* Unit 액션 버튼들 */
+.unit-actions{display:flex;gap:5px;flex-shrink:0;}
+.unit-btn{padding:7px 11px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:13px;font-weight:700;font-family:'Noto Sans KR',sans-serif;transition:all .2s;white-space:nowrap;color:var(--mid);}
+.unit-btn:hover{background:var(--bg);border-color:var(--dark);color:var(--dark);}
+.unit-btn.content-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg);}
+.unit-btn.blank-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-bg);}
+.unit-btn.quiz-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-bg);}
+.unit-btn.done-btn{border-color:var(--green);color:var(--green);background:var(--green-bg);}
+.unit-btn.locked-btn{opacity:.4;cursor:not-allowed;}
+.unit-btn.locked-btn:hover{background:var(--white);border-color:var(--border);color:var(--mid);}
+
+/* 진행 표시 */
+.ch-progress{padding:8px 16px;background:var(--bg);border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.ch-prog-bar{flex:1;height:4px;background:var(--border);border-radius:2px;}
+.ch-prog-fill{height:100%;border-radius:2px;background:var(--green);transition:width .4s;}
+.ch-prog-text{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap;}
+
+/* 선생님 잠금 배너 */
+.teacher-locked-banner{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg);border-top:1px solid var(--border);}
+.tlb-icon{font-size:20px;}
+.tlb-text{font-size:13px;color:var(--muted);line-height:1.5;}
+
+/* ── 내용정리 ── */
+.pt-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px;}
+.pt-head{display:flex;align-items:center;gap:12px;padding:13px 17px;border-bottom:1px solid var(--border);}
+.pt-tag{padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;flex-shrink:0;}
+.pt-body{padding:15px 17px;}
+.formula{background:var(--dark);color:#fff;border-radius:9px;padding:11px 16px;font-family:'DM Mono',monospace;font-size:14px;margin-bottom:12px;text-align:center;}
+.key-rule{background:var(--bg);border-radius:9px;padding:11px 13px;margin-bottom:10px;font-size:14px;line-height:1.7;border-left:3px solid transparent;}
+.adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0;}
+.adv-item{background:var(--bg);border-radius:8px;padding:9px 11px;}
+.adv-en{font-weight:700;color:var(--blue);font-family:'DM Mono',monospace;font-size:13px;}
+.adv-kr{font-size:11px;color:var(--muted);margin-top:2px;}
+.ex-item{padding:9px 0;border-bottom:1px solid var(--border);}
+.ex-item:last-child{border-bottom:none;}
+.ex-en{font-size:14px;font-weight:500;margin-bottom:3px;}
+.kw{color:var(--blue);font-weight:700;}
+.ex-kr{font-size:12px;color:var(--muted);}
+.caution{background:#fff8ed;border:1px solid #fde8b5;border-radius:9px;padding:11px 13px;font-size:13px;color:#7a5500;line-height:1.6;margin-top:10px;}
+.caution::before{content:'주의  ';font-weight:700;}
+
+/* ── 빈칸 ── */
+.quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.q-count{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;}
+.q-timer{font-size:14px;font-weight:700;color:var(--red);font-family:'DM Mono',monospace;background:var(--red-bg);padding:5px 12px;border-radius:20px;}
+.blank-card{background:var(--white);border:1.5px solid var(--border);border-radius:15px;padding:18px;margin-bottom:12px;}
+.blank-num{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;}
+.blank-hint{font-size:13px;color:var(--mid);background:var(--bg);padding:8px 12px;border-radius:8px;margin-bottom:12px;line-height:1.6;}
+.blank-sent{font-size:15px;line-height:2.3;margin-bottom:6px;}
+.blank-input{border:none;border-bottom:2.5px solid var(--blue);min-width:110px;padding:2px 8px;font-size:14px;font-family:'DM Mono',monospace;color:var(--blue);background:transparent;text-align:center;outline:none;transition:border-color .2s;}
+.blank-input.ok{border-color:var(--green);color:var(--green);}
+.blank-input.ng{border-color:var(--red);color:var(--red);}
+.blank-tr{font-size:12px;color:var(--muted);font-style:italic;margin-top:4px;}
+.check-btn{width:100%;padding:12px;background:var(--dark);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:'Noto Sans KR',sans-serif;cursor:pointer;margin-top:10px;transition:all .2s;}
+.check-btn:hover{background:#2d2d4e;}
+.fb{padding:11px 13px;border-radius:10px;font-size:13px;margin-top:8px;display:none;line-height:1.6;}
+.fb.ok{background:var(--green-bg);color:#155724;border:1px solid #a8e6c0;}
+.fb.ng{background:var(--red-bg);color:#7b1919;border:1px solid #f5b7b1;}
+
+/* ── 문제풀기 ── */
+.diff-tabs{display:flex;gap:7px;margin-bottom:14px;}
+.diff-tab{flex:1;padding:10px 6px;border-radius:11px;border:1.5px solid var(--border);background:var(--white);text-align:center;cursor:pointer;transition:all .2s;}
+.diff-tab .di{font-size:16px;margin-bottom:3px;}
+.diff-tab .dl{font-size:12px;font-weight:700;color:var(--muted);}
+.diff-tab .dc{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:1px;}
+.diff-tab.e-on{background:var(--green-bg);border-color:var(--green);}
+.diff-tab.e-on .dl{color:var(--green);}
+.diff-tab.m-on{background:var(--gold-bg);border-color:var(--gold);}
+.diff-tab.m-on .dl{color:var(--gold);}
+.diff-tab.h-on{background:var(--red-bg);border-color:var(--red);}
+.diff-tab.h-on .dl{color:var(--red);}
+.q-info-bar{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 15px;font-size:13px;color:var(--mid);margin-bottom:12px;display:flex;justify-content:space-between;}
+.q-info-bar span{font-weight:700;color:var(--dark);font-family:'DM Mono',monospace;}
+.q-card{background:var(--white);border:1.5px solid var(--border);border-radius:15px;padding:18px;margin-bottom:11px;}
+.q-badge{display:inline-block;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700;background:var(--blue-bg);color:var(--blue);margin-bottom:10px;font-family:'DM Mono',monospace;}
+.q-text{font-size:14px;font-weight:500;line-height:1.7;margin-bottom:13px;}
+.opts{display:flex;flex-direction:column;gap:6px;}
+.opt{padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:9px;background:var(--white);transition:all .2s;}
+.opt:hover{border-color:var(--dark);background:var(--bg);}
+.opt.right{border-color:var(--green);background:var(--green-bg);color:#155724;}
+.opt.wrong{border-color:var(--red);background:var(--red-bg);color:#7b1919;}
+.opt-n{width:22px;height:22px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;font-family:'DM Mono',monospace;}
+.hint-box{background:var(--bg);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6;}
+.fill-input{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'Noto Sans KR',sans-serif;outline:none;margin-top:8px;transition:border-color .2s;}
+.fill-input:focus{border-color:var(--blue);}
+
+/* ── 음성 (Chapter) ── */
+.ch-voice-banner{background:linear-gradient(135deg,var(--purple-bg),#e8e0ff);border:1.5px solid #c4b5fd;border-radius:14px;padding:16px 18px;margin-bottom:16px;}
+.ch-voice-banner h3{font-size:15px;font-weight:700;color:var(--purple);margin-bottom:4px;}
+.ch-voice-banner p{font-size:12px;color:var(--mid);line-height:1.6;}
+.voice-guide{background:var(--white);border:1px solid var(--border);border-radius:13px;padding:16px;margin-bottom:14px;}
+.voice-guide h3{font-size:14px;font-weight:700;margin-bottom:3px;}
+.voice-guide .vsub{font-size:12px;color:var(--muted);margin-bottom:11px;}
+.voice-guide li{font-size:13px;color:var(--mid);padding:6px 0 6px 18px;border-bottom:1px solid var(--border);position:relative;line-height:1.6;list-style:none;}
+.voice-guide li::before{content:'→';position:absolute;left:0;color:var(--muted);}
+.voice-guide li:last-child{border-bottom:none;}
+.rec-wrap{text-align:center;background:var(--white);border:1.5px dashed var(--border);border-radius:16px;padding:30px 20px;margin-bottom:14px;}
+.rec-btn{width:72px;height:72px;border-radius:50%;background:var(--dark);border:none;cursor:pointer;font-size:28px;display:block;margin:0 auto 14px;transition:all .2s;}
+.rec-btn.on{background:var(--red);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.rec-status{font-size:13px;color:var(--muted);margin-bottom:5px;}
+.rec-timer{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;}
+.transcript{background:var(--bg);border-radius:10px;padding:13px;font-size:13px;line-height:1.8;color:var(--mid);min-height:60px;margin-bottom:12px;}
+.ai-result{display:none;background:var(--white);border:2px solid var(--green);border-radius:14px;padding:18px;margin-bottom:14px;text-align:center;}
+.score-ring{width:72px;height:72px;border-radius:50%;border:4px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;font-family:'DM Mono',monospace;color:var(--green);margin:0 auto 11px;}
+.ai-fb{font-size:13px;line-height:1.7;color:var(--mid);text-align:left;}
+
+/* ── 백지정리 (Chapter) ── */
+.ch-note-banner{background:linear-gradient(135deg,var(--green-bg),#d4f7e7);border:1.5px solid #6ee7b7;border-radius:14px;padding:16px 18px;margin-bottom:16px;}
+.ch-note-banner h3{font-size:15px;font-weight:700;color:var(--green);margin-bottom:4px;}
+.ch-note-banner p{font-size:12px;color:var(--mid);line-height:1.6;}
+.method-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.method-card{background:var(--white);border:1.5px solid var(--border);border-radius:13px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;}
+.method-card:hover{border-color:var(--dark);transform:translateY(-2px);}
+.method-card.selected{border-color:var(--green);background:var(--green-bg);}
+.method-card .mc-icon{font-size:28px;margin-bottom:8px;}
+.method-card .mc-label{font-size:13px;font-weight:700;}
+.method-card .mc-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+.note-textarea{width:100%;padding:14px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;font-family:'Noto Sans KR',sans-serif;outline:none;resize:vertical;min-height:200px;transition:border-color .2s;line-height:1.8;}
+.note-textarea:focus{border-color:var(--green);}
+.photo-upload{border:2px dashed var(--border);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--white);margin-bottom:14px;}
+.photo-upload:hover{border-color:var(--green);background:var(--green-bg);}
+.photo-upload .pu-icon{font-size:36px;margin-bottom:10px;}
+.photo-upload .pu-text{font-size:14px;font-weight:700;margin-bottom:4px;}
+.photo-upload .pu-sub{font-size:12px;color:var(--muted);}
+
+/* ── 결과 ── */
+.result-hero{text-align:center;padding:36px 20px 24px;background:linear-gradient(135deg,var(--dark),#2d2d4e);color:#fff;}
+.medal-big{font-size:64px;margin-bottom:10px;animation:pop .5s ease;}
+@keyframes pop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+.result-pts{font-size:44px;font-weight:900;font-family:'DM Mono',monospace;margin-bottom:5px;}
+.result-lbl{font-size:13px;color:rgba(255,255,255,.4);}
+.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.bd{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 10px;text-align:center;}
+.bd-score{font-size:20px;font-weight:900;font-family:'DM Mono',monospace;margin-bottom:3px;}
+.bd-lbl{font-size:11px;color:var(--muted);}
+.wrong-section{background:var(--white);border:1px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:14px;}
+.wrong-header{padding:13px 17px;border-bottom:1px solid var(--border);font-size:14px;font-weight:700;}
+.wrong-item{padding:12px 17px;border-bottom:1px solid var(--border);font-size:13px;}
+.wrong-item:last-child{border-bottom:none;}
+.wq{font-weight:600;color:var(--dark);margin-bottom:3px;}
+.wm{color:var(--red);}
+.wa{color:var(--green);}
+</style>
+</head>
+<body>
+
+<div id="cap-block">캡쳐는 허용되지 않습니다</div>
+
+<!-- ════ 로그인 ════ -->
+<div id="screen-login" class="screen active">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <h1>Grammar Master</h1>
+      <p>영어 문법 학습 앱</p>
+    </div>
+    <div class="login-card">
+      <div class="field"><label>이름</label><input id="inp-name" type="text" placeholder="이름을 입력하세요" value="김민준"></div>
+      <div class="field">
+        <label>학년 / 반</label>
+        <select id="inp-class"><option>중2 A반</option><option>중2 B반</option><option>중3 A반</option></select>
+      </div>
+      <div class="field"><label>비밀번호</label><input type="password" placeholder="비밀번호" value="1234"></div>
+      <button class="login-btn" onclick="doLogin()">로그인</button>
+    </div>
+    <div class="teacher-link" onclick="goTo('teacher-login')">선생님</div>
+  </div>
+</div>
+
+<!-- 선생님 로그인 -->
+<div id="screen-teacher-login" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goTo('login')">&#8249;</button>
+    <div><div class="top-title">선생님 로그인</div></div>
+  </div>
+  <div class="content" style="padding-top:28px;">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px;">
+      <div class="field" style="margin-bottom:13px;"><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">아이디</label><input type="text" placeholder="아이디" style="width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;outline:none;font-family:'Noto Sans KR',sans-serif;background:var(--bg);"></div>
+      <div class="field" style="margin-bottom:13px;"><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">비밀번호</label><input type="password" placeholder="비밀번호" style="width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;outline:none;font-family:'Noto Sans KR',sans-serif;background:var(--bg);"></div>
+      <button class="btn btn-dark" onclick="goTo('main')">로그인</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 메인 ════ -->
+<div id="screen-main" class="screen">
+  <div class="main-hero">
+    <div class="hi">안녕하세요</div>
+    <h1 id="main-name">김민준 학생</h1>
+    <div class="rank-badge" onclick="openModal()">
+      <span class="rm" id="my-medal">🥈</span>
+      <span class="rt">현재</span>
+      <span class="rn" id="my-rank">2위</span>
+      <span class="ra">랭킹 확인 ›</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="sec-label">교재</div>
+    <div class="book-row">
+      <div class="book-chip on">천일문 Grammar 3</div>
+      <div class="book-chip off">해커스 중등 2학년</div>
+    </div>
+
+    <div class="sec-label" style="margin-top:20px;">Chapter</div>
+    <div id="ch-list">
+      <div style="text-align:center;padding:40px;color:var(--muted);font-size:15px;">로그인 후 불러옵니다...</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 랭킹 모달 -->
+<div class="modal-bg" id="rank-modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-title">반 랭킹</div>
+    <div class="modal-sub">2개월마다 초기화 · 금은동 메달은 이름 옆에 표시</div>
+    <div class="rank-table">
+      <div class="rrow"><div class="rpos">1</div><div class="rname">s_001 <span class="rmedal">🥇</span></div><div class="rscore">맞은 수 28</div></div>
+      <div class="rrow me"><div class="rpos">2</div><div class="rname">김민준 (나) <span class="rmedal">🥈</span></div><div class="rscore">맞은 수 23</div></div>
+      <div class="rrow"><div class="rpos">3</div><div class="rname">s_003 <span class="rmedal">🥉</span></div><div class="rscore">맞은 수 21</div></div>
+      <div class="rrow"><div class="rpos">4</div><div class="rname">s_004</div><div class="rscore">맞은 수 18</div></div>
+      <div class="rrow"><div class="rpos">5</div><div class="rname">s_005</div><div class="rscore">맞은 수 15</div></div>
+    </div>
+    <button class="modal-close" onclick="closeModal()">닫기</button>
+  </div>
+</div>
+
+<!-- ════ 내용정리 ════ -->
+<div id="screen-summary" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goTo('main')">&#8249;</button>
+    <div><div class="top-title">내용정리</div><div class="top-sub">Ch.01 Unit 1 현재완료</div></div>
+    <div class="step-badge" style="background:var(--blue-bg);color:var(--blue);">내용보기</div>
+  </div>
+  <div class="content">
+    <div class="pt-card">
+      <div class="pt-head"><div class="pt-tag" style="background:var(--dark);color:#fff;">개요</div><strong style="font-size:14px;">현재완료 — have[has] + p.p.</strong></div>
+      <div class="pt-body">
+        <div class="formula">have[has] + p.p.</div>
+        <div class="key-rule" style="border-left-color:var(--blue);">과거에 일어난 일이 <strong>현재까지 영향</strong>을 줄 때 사용. <strong>계속 / 경험 / 완료 / 결과</strong>의 의미.</div>
+        <div class="key-rule" style="border-left-color:var(--muted);font-size:13px;">부정문: have[has] not + p.p. &nbsp;|&nbsp; 의문문: Have[Has] + 주어 + p.p. ~?</div>
+      </div>
+    </div>
+    <div class="pt-card">
+      <div class="pt-head"><div class="pt-tag" style="background:var(--blue-bg);color:var(--blue);">POINT 1 빈출</div><strong>계속 — 지금까지 쭉 ~해 왔다</strong></div>
+      <div class="pt-body">
+        <div class="adv-grid">
+          <div class="adv-item"><div class="adv-en">for + 기간</div><div class="adv-kr">~ 동안</div></div>
+          <div class="adv-item"><div class="adv-en">since + 시점</div><div class="adv-kr">~ 이후로</div></div>
+        </div>
+        <div class="ex-item"><div class="ex-en">He <span class="kw">has worked</span> as a pilot <span class="kw">for five years</span>.</div><div class="ex-kr">그는 5년간 파일럿으로 일해 왔다.</div></div>
+      </div>
+    </div>
+    <div class="pt-card">
+      <div class="pt-head"><div class="pt-tag" style="background:var(--purple-bg);color:var(--purple);">POINT 2 빈출</div><strong>경험 — ~한 적이 있다</strong></div>
+      <div class="pt-body">
+        <div class="adv-grid">
+          <div class="adv-item"><div class="adv-en">ever / never</div><div class="adv-kr">~한 적 있다/없다</div></div>
+          <div class="adv-item"><div class="adv-en">once / twice</div><div class="adv-kr">한번 / 두번</div></div>
+        </div>
+        <div class="ex-item"><div class="ex-en">I <span class="kw">have never studied</span> all night for an exam.</div><div class="ex-kr">나는 시험을 위해 밤새 공부한 적이 없다.</div></div>
+      </div>
+    </div>
+    <div class="pt-card">
+      <div class="pt-head"><div class="pt-tag" style="background:var(--gold-bg);color:var(--gold);">POINT 3</div><strong>완료 — 막 ~했다</strong></div>
+      <div class="pt-body">
+        <div class="adv-grid">
+          <div class="adv-item"><div class="adv-en">already / just</div><div class="adv-kr">이미 / 이제 막</div></div>
+          <div class="adv-item"><div class="adv-en">yet / lately</div><div class="adv-kr">아직(부정) / 최근에</div></div>
+        </div>
+        <div class="caution">already · just → have와 p.p. 사이. yet · lately → 문장 끝!</div>
+      </div>
+    </div>
+    <div class="pt-card">
+      <div class="pt-head"><div class="pt-tag" style="background:var(--red-bg);color:var(--red);">POINT 4~5</div><strong>결과 / 과거 부사 주의</strong></div>
+      <div class="pt-body">
+        <div class="ex-item"><div class="ex-en">My neighbors <span class="kw">have gone</span> to their country.</div><div class="ex-kr">이웃들은 가버렸다. (지금 없음)</div></div>
+        <div class="caution">ago · last · yesterday · in+연도 → 현재완료와 함께 불가!</div>
+      </div>
+    </div>
+    <div class="pt-card">
+      <div class="pt-head"><div class="pt-tag" style="background:var(--green-bg);color:var(--green);">POINT 6 빈출</div><div><strong>현재완료진행형</strong><div style="font-size:11px;color:var(--muted);margin-top:2px;">have[has] been + -ing</div></div></div>
+      <div class="pt-body">
+        <div class="formula">have[has] been + V-ing</div>
+        <div class="ex-item"><div class="ex-en">I<span class="kw">'ve been waiting</span> for you for two hours.</div><div class="ex-kr">나는 두 시간째 너를 기다리고 있다.</div></div>
+        <div class="caution">감정·소유·인식 동사는 진행형 불가 (know, like, have 등)</div>
+      </div>
+    </div>
+    <button class="btn btn-dark" onclick="goTo('blanks')">빈칸 채우기로 이동</button>
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<!-- ════ 빈칸 채우기 ════ -->
+<div id="screen-blanks" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goTo('main')">&#8249;</button>
+    <div><div class="top-title">빈칸 채우기</div><div class="top-sub">Ch.01 Unit 1 · 10문제 · 15분</div></div>
+    <div class="step-badge" style="background:var(--gold-bg);color:var(--gold);">빈칸</div>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="bprog" style="width:10%;background:var(--gold);"></div></div>
+  <div class="content" style="padding-top:16px;">
+    <div class="quiz-meta">
+      <span class="q-count" id="bcount">1 / 10</span>
+      <span class="q-timer" id="btimer">15:00</span>
+    </div>
+    <div id="bq1" class="blank-card">
+      <div class="blank-num">Q1 · POINT 1 계속</div>
+      <div class="blank-hint">괄호 안 동사를 현재완료형으로 쓰세요. (work)</div>
+      <div class="blank-sent">He <input class="blank-input" id="bi1" placeholder="?"> as a pilot for five years.</div>
+      <div class="blank-tr">그는 5년간 파일럿으로 일해 왔다.</div>
+      <button class="check-btn" onclick="chk(1,'has worked','bi1','bf1')">확인</button>
+      <div class="fb" id="bf1"></div>
+    </div>
+    <div id="bq2" class="blank-card" style="display:none">
+      <div class="blank-num">Q2 · POINT 1 계속</div>
+      <div class="blank-hint">괄호 안 동사를 현재완료형으로 쓰세요. (attend)</div>
+      <div class="blank-sent">I <input class="blank-input" id="bi2" placeholder="?" style="min-width:140px;"> dance classes since last year.</div>
+      <div class="blank-tr">나는 작년부터 댄스 수업에 참여해 왔다.</div>
+      <button class="check-btn" onclick="chk(2,'have attended','bi2','bf2')">확인</button>
+      <div class="fb" id="bf2"></div>
+    </div>
+    <div id="bq3" class="blank-card" style="display:none">
+      <div class="blank-num">Q3 · POINT 2 경험</div>
+      <div class="blank-hint">괄호 안 동사를 알맞은 형태로 쓰세요. (go)</div>
+      <div class="blank-sent">Have you ever <input class="blank-input" id="bi3" placeholder="?"> camping in the woods?</div>
+      <div class="blank-tr">너는 숲에서 캠핑을 해 본 적이 있니?</div>
+      <button class="check-btn" onclick="chk(3,'gone','bi3','bf3')">확인</button>
+      <div class="fb" id="bf3"></div>
+    </div>
+    <div id="bq4" class="blank-card" style="display:none">
+      <div class="blank-num">Q4 · POINT 2 경험</div>
+      <div class="blank-hint">괄호 안 동사를 현재완료형으로 쓰세요. (visit)</div>
+      <div class="blank-sent">My family <input class="blank-input" id="bi4" placeholder="?" style="min-width:140px;"> New York before.</div>
+      <div class="blank-tr">우리 가족은 전에 뉴욕을 방문한 적이 있다.</div>
+      <button class="check-btn" onclick="chk(4,'has visited','bi4','bf4')">확인</button>
+      <div class="fb" id="bf4"></div>
+    </div>
+    <div id="bq5" class="blank-card" style="display:none">
+      <div class="blank-num">Q5 · POINT 3 완료</div>
+      <div class="blank-hint">괄호 안 동사를 현재완료형으로 쓰세요. (see)</div>
+      <div class="blank-sent">Mike has already <input class="blank-input" id="bi5" placeholder="?"> the new movie.</div>
+      <div class="blank-tr">Mike는 이미 새 영화를 봤다.</div>
+      <button class="check-btn" onclick="chk(5,'seen','bi5','bf5')">확인</button>
+      <div class="fb" id="bf5"></div>
+    </div>
+    <div id="bq6" class="blank-card" style="display:none">
+      <div class="blank-num">Q6 · POINT 3 완료</div>
+      <div class="blank-hint">괄호 안 동사를 현재완료 부정형으로 쓰세요. (finish)</div>
+      <div class="blank-sent">I <input class="blank-input" id="bi6" placeholder="?" style="min-width:150px;"> my homework yet.</div>
+      <div class="blank-tr">나는 아직 숙제를 끝내지 못했다.</div>
+      <button class="check-btn" onclick="chk(6,`haven't finished`,'bi6','bf6')">확인</button>
+      <div class="fb" id="bf6"></div>
+    </div>
+    <div id="bq7" class="blank-card" style="display:none">
+      <div class="blank-num">Q7 · POINT 4 결과</div>
+      <div class="blank-hint">괄호 안 동사를 현재완료형으로 쓰세요. (go)</div>
+      <div class="blank-sent">My neighbors <input class="blank-input" id="bi7" placeholder="?" style="min-width:130px;"> to their country.</div>
+      <div class="blank-tr">내 이웃들은 고향에 가버렸다. (지금 없다)</div>
+      <button class="check-btn" onclick="chk(7,'have gone','bi7','bf7')">확인</button>
+      <div class="fb" id="bf7"></div>
+    </div>
+    <div id="bq8" class="blank-card" style="display:none">
+      <div class="blank-num">Q8 · POINT 4 결과 vs 경험</div>
+      <div class="blank-hint">have been to / have gone to 중 알맞은 것을 쓰세요. (경험)</div>
+      <div class="blank-sent">She <input class="blank-input" id="bi8" placeholder="?" style="min-width:145px;"> Africa. (가 본 적이 있다)</div>
+      <div class="blank-tr">그녀는 아프리카에 가 본 적이 있다.</div>
+      <button class="check-btn" onclick="chk(8,'has been to','bi8','bf8')">확인</button>
+      <div class="fb" id="bf8"></div>
+    </div>
+    <div id="bq9" class="blank-card" style="display:none">
+      <div class="blank-num">Q9 · POINT 5 과거 부사 주의</div>
+      <div class="blank-hint">last가 있으므로 과거시제로 쓰세요. (visit)</div>
+      <div class="blank-sent">We <input class="blank-input" id="bi9" placeholder="?" style="min-width:120px;"> our grandmother's farm last summer.</div>
+      <div class="blank-tr">우리는 지난여름에 할머니 농장을 방문했다.</div>
+      <button class="check-btn" onclick="chk(9,'visited','bi9','bf9')">확인</button>
+      <div class="fb" id="bf9"></div>
+    </div>
+    <div id="bq10" class="blank-card" style="display:none">
+      <div class="blank-num">Q10 · POINT 6 현재완료진행</div>
+      <div class="blank-hint">현재완료진행형으로 쓰세요. (wait)</div>
+      <div class="blank-sent">I <input class="blank-input" id="bi10" placeholder="?" style="min-width:165px;"> for you at the cafe for two hours.</div>
+      <div class="blank-tr">나는 카페에서 두 시간째 너를 기다리고 있다.</div>
+      <button class="check-btn" onclick="chk(10,'have been waiting','bi10','bf10')">확인</button>
+      <div class="fb" id="bf10"></div>
+    </div>
+    <div id="blank-done" style="display:none;text-align:center;padding:28px 0;">
+      <div style="font-size:48px;margin-bottom:12px;">&#10004;&#65039;</div>
+      <h3 style="font-size:20px;font-weight:900;margin-bottom:8px;">빈칸 완료!</h3>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:22px;" id="blank-result"></p>
+      <button class="btn btn-dark" onclick="goTo('quiz')">문제 풀기로 이동</button>
+    </div>
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<!-- ════ 문제풀기 ════ -->
+<div id="screen-quiz" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goTo('main')">&#8249;</button>
+    <div><div class="top-title">문제 풀기</div><div class="top-sub">Ch.01 Unit 1 현재완료</div></div>
+    <div class="step-badge" style="background:var(--red-bg);color:var(--red);">문제</div>
+  </div>
+  <div class="content" style="padding-top:16px;">
+    <div class="diff-tabs">
+      <div class="diff-tab e-on" id="tab-e" onclick="sDiff('e')"><div class="di">&#128994;</div><div class="dl">쉬움</div><div class="dc">10문제</div></div>
+      <div class="diff-tab" id="tab-m" onclick="sDiff('m')"><div class="di">&#128993;</div><div class="dl">보통</div><div class="dc">10문제</div></div>
+      <div class="diff-tab" id="tab-h" onclick="sDiff('h')"><div class="di">&#128308;</div><div class="dl">어려움</div><div class="dc">10문제</div></div>
+    </div>
+    <div id="qe">
+      <div class="q-info-bar">쉬움 <span>10문제</span></div>
+      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">1. 빈칸에 알맞은 것은?<br><br>She ______ to Jeju Island several times.</div><div class="opts" id="e1"><div class="opt" onclick="po(this,'e1',false)"><div class="opt-n">①</div>went</div><div class="opt" onclick="po(this,'e1',false)"><div class="opt-n">②</div>goes</div><div class="opt" onclick="po(this,'e1',true)"><div class="opt-n">③</div>has been</div><div class="opt" onclick="po(this,'e1',false)"><div class="opt-n">④</div>have gone</div></div></div>
+      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">2. 현재완료와 함께 쓸 수 없는 표현은?</div><div class="opts" id="e2"><div class="opt" onclick="po(this,'e2',false)"><div class="opt-n">①</div>for three years</div><div class="opt" onclick="po(this,'e2',false)"><div class="opt-n">②</div>since last week</div><div class="opt" onclick="po(this,'e2',true)"><div class="opt-n">③</div>two days ago</div><div class="opt" onclick="po(this,'e2',false)"><div class="opt-n">④</div>already</div></div></div>
+      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">3. 다음 현재완료의 의미는?<br><br><em>I have just finished my homework.</em></div><div class="opts" id="e3"><div class="opt" onclick="po(this,'e3',false)"><div class="opt-n">①</div>계속</div><div class="opt" onclick="po(this,'e3',false)"><div class="opt-n">②</div>경험</div><div class="opt" onclick="po(this,'e3',true)"><div class="opt-n">③</div>완료</div><div class="opt" onclick="po(this,'e3',false)"><div class="opt-n">④</div>결과</div></div></div>
+      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">4. I ______ never studied all night for an exam.</div><div class="opts" id="e4"><div class="opt" onclick="po(this,'e4',false)"><div class="opt-n">①</div>do</div><div class="opt" onclick="po(this,'e4',true)"><div class="opt-n">②</div>have</div><div class="opt" onclick="po(this,'e4',false)"><div class="opt-n">③</div>had</div><div class="opt" onclick="po(this,'e4',false)"><div class="opt-n">④</div>has</div></div></div>
+      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">5. 어법상 알맞은 문장은?</div><div class="opts" id="e5"><div class="opt" onclick="po(this,'e5',false)"><div class="opt-n">①</div>I have seen him yesterday.</div><div class="opt" onclick="po(this,'e5',true)"><div class="opt-n">②</div>She has worked here for 3 years.</div><div class="opt" onclick="po(this,'e5',false)"><div class="opt-n">③</div>They have visited Paris last year.</div><div class="opt" onclick="po(this,'e5',false)"><div class="opt-n">④</div>He have gone to school.</div></div></div>
+      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">6. "경험"을 나타내는 현재완료 문장은?</div><div class="opts" id="e6"><div class="opt" onclick="po(this,'e6',false)"><div class="opt-n">①</div>He has worked here for 10 years.</div><div class="opt" onclick="po(this,'e6',true)"><div class="opt-n">②</div>Have you ever eaten sushi?</div><div class="opt" onclick="po(this,'e6',false)"><div class="opt-n">③</div>She has just arrived home.</div><div class="opt" onclick="po(this,'e6',false)"><div class="opt-n">④</div>My keys have gone missing.</div></div></div>
+      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">7. Mike has ______ seen the new movie. (이미)</div><div class="opts" id="e7"><div class="opt" onclick="po(this,'e7',false)"><div class="opt-n">①</div>yet</div><div class="opt" onclick="po(this,'e7',true)"><div class="opt-n">②</div>already</div><div class="opt" onclick="po(this,'e7',false)"><div class="opt-n">③</div>since</div><div class="opt" onclick="po(this,'e7',false)"><div class="opt-n">④</div>for</div></div></div>
+      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">8. She ______ Africa. (지금 아프리카에 없다)</div><div class="opts" id="e8"><div class="opt" onclick="po(this,'e8',false)"><div class="opt-n">①</div>has been to</div><div class="opt" onclick="po(this,'e8',true)"><div class="opt-n">②</div>has gone to</div><div class="opt" onclick="po(this,'e8',false)"><div class="opt-n">③</div>had been to</div><div class="opt" onclick="po(this,'e8',false)"><div class="opt-n">④</div>had gone to</div></div></div>
+      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">9. 현재완료진행형의 형태는?</div><div class="opts" id="e9"><div class="opt" onclick="po(this,'e9',false)"><div class="opt-n">①</div>have + p.p.</div><div class="opt" onclick="po(this,'e9',false)"><div class="opt-n">②</div>be + -ing</div><div class="opt" onclick="po(this,'e9',true)"><div class="opt-n">③</div>have been + -ing</div><div class="opt" onclick="po(this,'e9',false)"><div class="opt-n">④</div>had been + -ing</div></div></div>
+      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">10. How long ______ you lived here?</div><div class="opts" id="e10"><div class="opt" onclick="po(this,'e10',false)"><div class="opt-n">①</div>do</div><div class="opt" onclick="po(this,'e10',false)"><div class="opt-n">②</div>did</div><div class="opt" onclick="po(this,'e10',true)"><div class="opt-n">③</div>have</div><div class="opt" onclick="po(this,'e10',false)"><div class="opt-n">④</div>had</div></div></div>
+    </div>
+    <div id="qm" style="display:none"><div class="q-info-bar">보통 <span>10문제</span></div><div class="q-card"><div class="q-badge">빈칸완성</div><div class="q-text">1. I ______ (attend) dance classes since last year.</div><div class="opts" id="m1"><div class="opt" onclick="po(this,'m1',false)"><div class="opt-n">①</div>attended</div><div class="opt" onclick="po(this,'m1',true)"><div class="opt-n">②</div>have attended</div><div class="opt" onclick="po(this,'m1',false)"><div class="opt-n">③</div>was attending</div><div class="opt" onclick="po(this,'m1',false)"><div class="opt-n">④</div>had attended</div></div></div><p style="text-align:center;color:var(--muted);font-size:13px;padding:20px;">보통 2~10번 문제 (실제 구현 시 추가)</p></div>
+    <div id="qh" style="display:none"><div class="q-info-bar">어려움 <span>10문제</span></div><div class="q-card"><div class="q-badge">어법오류</div><div class="q-text">1. 어법상 알맞지 않은 문장은?</div><div class="opts" id="h1"><div class="opt" onclick="po(this,'h1',false)"><div class="opt-n">①</div>Have you ever met any famous person before?</div><div class="opt" onclick="po(this,'h1',false)"><div class="opt-n">②</div>My uncle has already bought a sports car.</div><div class="opt" onclick="po(this,'h1',true)"><div class="opt-n">③</div>He has gone to Los Angeles once.</div><div class="opt" onclick="po(this,'h1',false)"><div class="opt-n">④</div>I've been waiting for the bus for 30 minutes.</div></div><div class="hint-box">have gone to는 결과 → once(경험)와 함께 쓰면 어색. have been to가 맞음</div></div><p style="text-align:center;color:var(--muted);font-size:13px;padding:20px;">어려움 2~10번 문제 (실제 구현 시 추가)</p></div>
+    <button class="btn btn-dark" style="margin-top:10px;" onclick="goTo('result')">결과 보기</button>
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<!-- ════ Chapter 음성 설명 (3.5단계) ════ -->
+<div id="screen-ch-voice" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goTo('main')">&#8249;</button>
+    <div><div class="top-title">Chapter 설명하기</div><div class="top-sub">Ch.01 완료 시제 전체</div></div>
+    <div class="step-badge" style="background:var(--purple-bg);color:var(--purple);">3.5단계</div>
+  </div>
+  <div class="content" style="padding-top:16px;">
+    <div class="ch-voice-banner">
+      <h3>Chapter 01 완료 시제 — 음성 설명</h3>
+      <p>Unit 1 현재완료 + Unit 2 과거완료<br>전체 내용을 말로 설명해보세요. 85% 이상 일치하면 통과!</p>
+    </div>
+    <div class="voice-guide">
+      <h3>아래 내용을 포함해서 설명해보세요</h3>
+      <p class="vsub">아래의 내용을 포함하는 문법 설명을 시작합니다.</p>
+      <ul>
+        <li>현재완료 형태와 4가지 의미 (계속·경험·완료·결과)</li>
+        <li>계속 — for / since 등 함께 쓰는 표현</li>
+        <li>경험 — ever / never / once / twice</li>
+        <li>완료 — already / just / yet / lately</li>
+        <li>결과 — have been to vs have gone to 차이</li>
+        <li>현재완료와 쓸 수 없는 과거 부사 (ago, last, yesterday)</li>
+        <li>현재완료진행형 (have been + -ing)</li>
+        <li>과거완료 형태 (had + p.p.)와 용법</li>
+      </ul>
+    </div>
+    <div class="rec-wrap">
+      <button class="rec-btn" id="rec-btn" onclick="toggleRec()">🎤</button>
+      <div class="rec-status" id="rec-st">버튼을 눌러 녹음 시작</div>
+      <div class="rec-timer" id="rec-t">0:00</div>
+    </div>
+    <div class="transcript" id="transcript">녹음 완료 후 인식된 텍스트가 여기에 표시됩니다...</div>
+    <div class="ai-result" id="ai-result">
+      <div class="score-ring">88%</div>
+      <h3 style="margin-bottom:10px;">통과! (85% 이상)</h3>
+      <div class="ai-fb">
+        <p style="color:var(--green);margin-bottom:8px;">잘 설명한 부분: 현재완료 형태, 계속/경험/완료, 현재완료진행형</p>
+        <p style="color:var(--red);">보충 필요: 과거완료(had+p.p.) 설명이 빠졌어요!</p>
+      </div>
+    </div>
+    <div id="voice-actions"><button class="btn btn-outline" onclick="simVoice()">AI 채점 받기 (시뮬레이션)</button></div>
+    <button class="btn btn-dark" id="voice-next" style="display:none;margin-top:10px;" onclick="goTo('main')">완료 — 메인으로</button>
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<!-- ════ Chapter 백지 정리 (5단계) ════ -->
+<div id="screen-ch-note" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goTo('main')">&#8249;</button>
+    <div><div class="top-title">Chapter 정리하기</div><div class="top-sub">Ch.01 완료 시제 전체</div></div>
+    <div class="step-badge" style="background:var(--green-bg);color:var(--green);">5단계</div>
+  </div>
+  <div class="content" style="padding-top:16px;">
+    <div class="ch-note-banner">
+      <h3>Chapter 01 완료 시제 — 백지 정리</h3>
+      <p>Unit 1 현재완료 + Unit 2 과거완료<br>배운 내용을 스스로 정리해보세요. AI가 내용과 대조해 채점합니다.</p>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;margin-bottom:12px;">정리 방법 선택</p>
+    <div class="method-cards">
+      <div class="method-card selected" id="mc-type" onclick="selectMethod('type')">
+        <div class="mc-icon">⌨️</div>
+        <div class="mc-label">직접 타이핑</div>
+        <div class="mc-sub">앱에서 바로 입력</div>
+      </div>
+      <div class="method-card" id="mc-photo" onclick="selectMethod('photo')">
+        <div class="mc-icon">📷</div>
+        <div class="mc-label">사진 업로드</div>
+        <div class="mc-sub">공책 정리 후 촬영</div>
+      </div>
+    </div>
+
+    <div id="method-type">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Chapter 01 완료 시제 내용을 자유롭게 정리해보세요.</p>
+      <textarea class="note-textarea" id="note-text" placeholder="현재완료는 have/has + p.p. 형태로...&#10;계속의 의미는 for, since와 함께 쓰며...&#10;경험의 의미는 ever, never를 사용하고..."></textarea>
+      <button class="btn btn-dark" style="margin-top:12px;" onclick="simNoteAI()">AI 채점 받기</button>
+    </div>
+
+    <div id="method-photo" style="display:none;">
+      <div class="photo-upload" onclick="document.getElementById('photo-inp').click()">
+        <div class="pu-icon">📸</div>
+        <div class="pu-text">공책 사진 업로드</div>
+        <div class="pu-sub">탭하여 사진 선택</div>
+      </div>
+      <input type="file" id="photo-inp" accept="image/*" style="display:none;" onchange="previewPhoto(this)">
+      <div id="photo-preview" style="display:none;margin-bottom:12px;">
+        <img id="preview-img" style="width:100%;border-radius:12px;border:1px solid var(--border);">
+      </div>
+      <button class="btn btn-dark" onclick="simNoteAI()">AI 채점 받기</button>
+    </div>
+
+    <div class="ai-result" id="note-ai-result" style="margin-top:14px;">
+      <div class="score-ring" style="border-color:var(--green);color:var(--green);">91%</div>
+      <h3 style="margin-bottom:10px;">우수! Chapter 01 정리 완료</h3>
+      <div class="ai-fb">
+        <p style="color:var(--green);margin-bottom:8px;">잘 정리한 부분: 현재완료 4가지 의미, 함께 쓰는 부사 표현, 현재완료진행형</p>
+        <p style="color:var(--red);">보충 필요: 과거완료 had+p.p. 형태와 용법 설명이 부족해요.</p>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<!-- ════ 결과 ════ -->
+<div id="screen-result" class="screen">
+  <div class="result-hero">
+    <div class="medal-big">🥈</div>
+    <div class="result-pts">23점</div>
+    <div class="result-lbl">Ch.01 Unit 1 · 맞은 문제 수</div>
+  </div>
+  <div class="content" style="padding-top:18px;">
+    <div class="breakdown">
+      <div class="bd"><div class="bd-score" style="color:var(--gold);">8<span style="font-size:13px;color:var(--muted);">/10</span></div><div class="bd-lbl">빈칸</div></div>
+      <div class="bd"><div class="bd-score" style="color:var(--red);">7<span style="font-size:13px;color:var(--muted);">/10</span></div><div class="bd-lbl">문제 (쉬움)</div></div>
+      <div class="bd"><div class="bd-score" style="color:var(--blue);">8<span style="font-size:13px;color:var(--muted);">/10</span></div><div class="bd-lbl">문제 (보통)</div></div>
+    </div>
+    <div class="wrong-section">
+      <div class="wrong-header">틀린 문제 확인</div>
+      <div class="wrong-item"><div class="wq">빈칸 Q2 · POINT 1 계속</div><div class="wm">내 답: have attend</div><div class="wa">정답: have attended</div></div>
+      <div class="wrong-item"><div class="wq">빈칸 Q6 · POINT 3 완료</div><div class="wm">내 답: didn't finish</div><div class="wa">정답: haven't finished</div></div>
+      <div class="wrong-item"><div class="wq">문제 쉬움 3번</div><div class="wm">내 답: 결과</div><div class="wa">정답: 완료 (just = 완료)</div></div>
+    </div>
+    <button class="btn btn-dark" onclick="goTo('main')">메인으로 돌아가기</button>
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<script>
+// 캡쳐 방지
+document.addEventListener('keydown',e=>{
+  if(e.key==='PrintScreen'||(e.ctrlKey&&e.key==='p')||(e.ctrlKey&&e.shiftKey&&e.key==='S')){e.preventDefault();showCap();}
+});
+document.addEventListener('keyup',e=>{if(e.key==='PrintScreen')showCap();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)showCap();});
+function showCap(){const el=document.getElementById('cap-block');el.style.display='flex';setTimeout(()=>{el.style.display='none';},2000);}
+
+// 화면 전환
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='blanks') startTimer();
+}
+
+// 로그인
+function doLogin(){
+  const n   = document.getElementById('inp-name').value || '학생';
+  const cls = document.getElementById('inp-class').value || '5a';
+  document.getElementById('main-name').textContent = n + ' 학생';
+  // 학생 정보 저장 (결과 저장에 사용)
+  window._student = { name: n, cls: cls };
+  goTo('main');
+  // 스프레드시트에서 반별 Chapter/Unit 불러오기
+  loadChapters(cls, '천일문 Grammar 3');
+}
+
+// ── Apps Script 연동 ──
+const API_URL = 'https://script.google.com/macros/s/AKfycbxjYMSMAHQd0b5CTB_NEngM_hD-NaUQZV9Cw_8uHKO8CE16unl-oaqMOGkWw26SeZwU/exec';
+
+// 로그인 후 반별 Chapter/Unit 불러오기
+async function loadChapters(cls, book) {
+  const chList = document.getElementById('ch-list');
+  chList.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:15px;">불러오는 중...</div>';
+
+  try {
+    const url = `${API_URL}?action=getUnits&class=${encodeURIComponent(cls)}&book=${encodeURIComponent(book)}`;
+    const res  = await fetch(url);
+    const json = await res.json();
+
+    if (!json.ok || !json.data.length) {
+      chList.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:15px;">열린 Chapter가 없습니다.<br>선생님께 문의하세요.</div>';
+      return;
+    }
+
+    chList.innerHTML = '';
+    json.data.forEach((ch, idx) => {
+      const chId = 'ch-dyn-' + idx;
+      const card = document.createElement('div');
+      card.className = 'ch-card open';
+      card.id = chId;
+
+      // Unit 행 생성
+      const unitRows = ch.units.map(u => `
+        <div class="unit-row">
+          <div class="udot active"></div>
+          <div class="uname">Unit ${u.unit_num}&nbsp; ${u.unit_name}</div>
+          <div class="unit-actions">
+            <button class="unit-btn content-btn" onclick="goTo('summary')">내용보기</button>
+            <button class="unit-btn blank-btn"   onclick="goTo('blanks')">빈칸</button>
+            <button class="unit-btn quiz-btn"     onclick="goTo('quiz')">문제</button>
+          </div>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="ch-head">
+          <div class="ch-toggle" onclick="toggleCh('${chId}')">
+            <div class="ch-num">${String(ch.chapter_num).padStart(2,'0')}</div>
+            <div class="ch-info">
+              <h3>${ch.chapter_name}</h3>
+              <p>Unit ${ch.units.map(u=>u.unit_num).join(', ')}</p>
+            </div>
+            <div class="ch-arrow">›</div>
+          </div>
+          <div class="ch-actions">
+            <button class="ch-action-btn voice-btn" onclick="goTo('ch-voice')">
+              <span class="ab-icon">🎤</span>
+              <span class="ab-label">설명하기</span>
+            </button>
+            <button class="ch-action-btn note-btn" onclick="goTo('ch-note')">
+              <span class="ab-icon">✏️</span>
+              <span class="ab-label">정리하기</span>
+            </button>
+          </div>
+        </div>
+        <div class="ch-progress">
+          <div class="ch-prog-bar"><div class="ch-prog-fill" style="width:0%;"></div></div>
+          <div class="ch-prog-text">0/${ch.units.length} 완료</div>
+        </div>
+        <div class="unit-list" id="ul-${chId}">${unitRows}</div>
+      `;
+      chList.appendChild(card);
+    });
+
+  } catch(err) {
+    chList.innerHTML = '<div style="text-align:center;padding:40px;color:var(--red);font-size:15px;">불러오기 실패. 네트워크를 확인하세요.</div>';
+    console.error(err);
+  }
+}
+
+// 결과 저장
+async function saveResult(data) {
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'saveResult', ...data })
+    });
+  } catch(e) {
+    console.error('결과 저장 실패', e);
+  }
+}
+
+// 선생님 잠금 안내
+function showTeacherLock(){
+  alert('선생님이 수업 후 열어주는 Chapter입니다.\n수업이 끝나면 선생님께 문의하세요!');
+}
+
+// 챕터 토글
+function toggleCh(id){
+  const c=document.getElementById(id);
+  const ul=document.getElementById('ul-'+id);
+  if(!ul)return;
+  c.classList.toggle('open');
+  ul.style.display=c.classList.contains('open')?'block':'none';
+}
+
+// 랭킹 모달
+function openModal(){document.getElementById('rank-modal').classList.add('open');}
+function closeModal(e){if(!e||e.target===document.getElementById('rank-modal'))document.getElementById('rank-modal').classList.remove('open');}
+
+// 빈칸 타이머
+let timerInt,secs=900;
+function startTimer(){
+  clearInterval(timerInt);secs=900;
+  timerInt=setInterval(()=>{
+    secs--;
+    const m=Math.floor(secs/60),s=secs%60;
+    const el=document.getElementById('btimer');
+    if(el)el.textContent=m+':'+(s<10?'0':'')+s;
+    if(secs<=0){clearInterval(timerInt);alert('시간 초과!');}
+  },1000);
+}
+
+// 빈칸 채우기
+let cur=1,blankOk=0;
+function chk(n,ans,inId,fbId){
+  const inp=document.getElementById(inId);
+  const fb=document.getElementById(fbId);
+  const v=inp.value.trim().toLowerCase();
+  const a=ans.toLowerCase();
+  if(v===a){
+    inp.className='blank-input ok';
+    fb.className='fb ok';fb.style.display='block';
+    fb.textContent='정답!  '+ans;
+    blankOk++;
+    setTimeout(()=>{
+      cur++;
+      if(cur<=10){
+        document.getElementById('bq'+cur).style.display='block';
+        document.getElementById('bprog').style.width=(cur/10*100)+'%';
+        document.getElementById('bcount').textContent=cur+' / 10';
+      } else {
+        clearInterval(timerInt);
+        document.getElementById('bq10').style.display='none';
+        document.getElementById('blank-done').style.display='block';
+        document.getElementById('blank-result').textContent='10문제 중 '+blankOk+'개 정답!';
+      }
+    },1200);
+  } else {
+    inp.className='blank-input ng';
+    fb.className='fb ng';fb.style.display='block';
+    fb.textContent='다시 도전!  힌트: '+ans.slice(0,2)+'...';
+  }
+}
+
+// 난이도 탭
+function sDiff(d){
+  ['e','m','h'].forEach(x=>{
+    document.getElementById('tab-'+x).className='diff-tab'+(x===d?' '+(x==='e'?'e-on':x==='m'?'m-on':'h-on'):'');
+    document.getElementById('q'+x).style.display=x===d?'block':'none';
+  });
+}
+
+// 객관식
+function po(el,gid,ok){
+  document.querySelectorAll('#'+gid+' .opt').forEach(o=>o.classList.remove('right','wrong'));
+  if(ok){el.classList.add('right');}
+  else{
+    el.classList.add('wrong');
+    document.querySelectorAll('#'+gid+' .opt').forEach(o=>{
+      if(o.getAttribute('onclick')&&o.getAttribute('onclick').includes('true'))o.classList.add('right');
+    });
+  }
+}
+
+// 음성
+let recOn=false,recInt,recS=0;
+function toggleRec(){
+  const btn=document.getElementById('rec-btn');
+  const st=document.getElementById('rec-st');
+  const t=document.getElementById('rec-t');
+  if(!recOn){
+    recOn=true;recS=0;
+    btn.classList.add('on');btn.textContent='⏹';
+    st.textContent='녹음 중... 설명을 시작하세요';
+    recInt=setInterval(()=>{recS++;const m=Math.floor(recS/60),s=recS%60;t.textContent=m+':'+(s<10?'0':'')+s;},1000);
+  } else {
+    recOn=false;clearInterval(recInt);
+    btn.classList.remove('on');btn.textContent='🎤';
+    st.textContent='녹음 완료! AI 채점을 받으세요';
+    document.getElementById('transcript').textContent='현재완료는 have 또는 has에 과거분사를 붙입니다. 계속의 의미로 쓸 때는 for나 since와 함께 써요. 경험은 ever나 never를 사용하고, 현재완료진행형은 have been에 ing를 붙여서 씁니다...';
+  }
+}
+function simVoice(){
+  document.getElementById('ai-result').style.display='block';
+  document.getElementById('voice-actions').style.display='none';
+  document.getElementById('voice-next').style.display='block';
+}
+
+// 백지 정리 방법 선택
+function selectMethod(m){
+  document.getElementById('mc-type').classList.toggle('selected',m==='type');
+  document.getElementById('mc-photo').classList.toggle('selected',m==='photo');
+  document.getElementById('method-type').style.display=m==='type'?'block':'none';
+  document.getElementById('method-photo').style.display=m==='photo'?'block':'none';
+}
+function previewPhoto(inp){
+  if(!inp.files[0])return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    document.getElementById('preview-img').src=e.target.result;
+    document.getElementById('photo-preview').style.display='block';
+  };
+  reader.readAsDataURL(inp.files[0]);
+}
+function simNoteAI(){
+  document.getElementById('note-ai-result').style.display='block';
+}
+</script>
+</body>
+</html>
