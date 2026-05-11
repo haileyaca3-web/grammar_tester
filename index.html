@@ -312,8 +312,8 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);min-hei
   </div>
   <div class="content" style="padding-top:28px;">
     <div style="background:var(--white);border:2px solid var(--border);border-radius:18px;padding:24px;">
-      <div class="field" style="margin-bottom:14px;"><label style="display:block;font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px;">아이디</label><input type="text" style="width:100%;padding:13px 15px;border:2px solid var(--border);border-radius:12px;font-size:15px;font-family:'Nunito','Noto Sans KR',sans-serif;outline:none;"></div>
-      <div class="field" style="margin-bottom:16px;"><label style="display:block;font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px;">비밀번호</label><input type="password" style="width:100%;padding:13px 15px;border:2px solid var(--border);border-radius:12px;font-size:15px;font-family:'Nunito','Noto Sans KR',sans-serif;outline:none;"></div>
+      <div class="field" style="margin-bottom:14px;"><label style="display:block;font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px;">아이디</label><input type="text" style="width:100%;padding:13px 15px;border:2px solid var(--border);border-radius:12px;font-size:15px;font-family:'Nunito','Noto Sans KR',sans-serif;outline:none;color:var(--dark);background:#fff;"></div>
+      <div class="field" style="margin-bottom:16px;"><label style="display:block;font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px;">비밀번호</label><input type="password" style="width:100%;padding:13px 15px;border:2px solid var(--border);border-radius:12px;font-size:15px;font-family:'Nunito','Noto Sans KR',sans-serif;outline:none;color:var(--dark);background:#fff;"></div>
       <button class="btn btn-blue" onclick="goTo('main')">로그인</button>
     </div>
   </div>
@@ -812,7 +812,15 @@ async function doLogin(){
   const id=document.getElementById('inp-id').value.trim();
   const pw=document.getElementById('inp-pw').value.trim();
   const err=document.getElementById('login-error');
-  if(!id||!pw){err.style.display='block';return;}
+  if(!id||!pw){err.style.display='block';err.textContent='아이디와 비밀번호를 입력하세요.';return;}
+
+  // 선생님 계정 체크
+  if(id==='teacher'&&pw==='admin1234'){
+    window._student={id:'hailey',name:'선생님',class:'teacher'};
+    goTo('teacher-login');
+    return;
+  }
+
   const btn=document.querySelector('.login-btn');
   btn.textContent='로그인 중...';btn.disabled=true;err.style.display='none';
   try{
@@ -823,6 +831,7 @@ async function doLogin(){
       goTo('main');
       loadChapters(json.class);
     } else {
+      err.textContent='아이디 또는 비밀번호가 틀렸습니다.';
       err.style.display='block';
     }
   } catch(e){
