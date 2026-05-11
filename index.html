@@ -1125,37 +1125,67 @@ async function loadChapters(cls){
             <div class="uname">${u.unit_name}</div>
           </div>
           <div class="unit-btns">
-            <button class="unit-btn" onclick="selectUnit(${ch.chapter_num},'${ch.chapter_name}',${u.unit_num},'${u.unit_name}','summary')">내용</button>
-            <button class="unit-btn" onclick="selectUnit(${ch.chapter_num},'${ch.chapter_name}',${u.unit_num},'${u.unit_name}','blanks')">빈칸</button>
-            <button class="unit-btn" onclick="selectUnit(${ch.chapter_num},'${ch.chapter_name}',${u.unit_num},'${u.unit_name}','quiz')">문제</button>
+            <button class="unit-btn"
+              data-ch="${ch.chapter_num}" data-chname="${ch.chapter_name}"
+              data-u="${u.unit_num}" data-uname="${u.unit_name}"
+              onclick="selectUnitFromBtn(this,'summary')">내용</button>
+            <button class="unit-btn"
+              data-ch="${ch.chapter_num}" data-chname="${ch.chapter_name}"
+              data-u="${u.unit_num}" data-uname="${u.unit_name}"
+              onclick="selectUnitFromBtn(this,'blanks')">빈칸</button>
+            <button class="unit-btn"
+              data-ch="${ch.chapter_num}" data-chname="${ch.chapter_name}"
+              data-u="${u.unit_num}" data-uname="${u.unit_name}"
+              onclick="selectUnitFromBtn(this,'quiz')">문제</button>
           </div>
         </div>`).join('');
-      card.innerHTML=`
-        <div class="ch-head">
-          <div class="ch-toggle" onclick="toggleCh('${chId}')">
-            <div class="ch-num">${String(ch.chapter_num).padStart(2,'0')}</div>
-            <div class="ch-info"><h3>${ch.chapter_name}</h3><p>Unit ${ch.units.map(u=>u.unit_num).join(', ')}</p></div>
-            <div class="ch-arrow">›</div>
-          </div>
-          <div class="ch-actions">
-            <button class="ch-btn voice" onclick="selectChapter(${ch.chapter_num},'${ch.chapter_name}',ch.units,'ch-voice')">
-              <span class="cb-icon">🎤</span><span class="cb-label">설명하기</span>
-            </button>
-            <button class="ch-btn note" onclick="selectChapter(${ch.chapter_num},'${ch.chapter_name}',ch.units,'ch-note')">
-              <span class="cb-icon">✏️</span><span class="cb-label">정리하기</span>
-            </button>
-          </div>
-        </div>
-        <div class="ch-progress">
-          <div class="ch-prog-bar"><div class="ch-prog-fill" style="width:0%;"></div></div>
-          <div class="ch-prog-text">0/${ch.units.length} 완료</div>
-        </div>
-        <div class="unit-list" id="ul-${chId}">${unitRows}</div>`;
+      const chNum2 = String(ch.chapter_num).padStart(2,'0');
+      const chName2 = ch.chapter_name;
+      const chUnits2 = ch.units.map(u=>u.unit_num).join(', ');
+      const chLen2 = ch.units.length;
+      const chN2 = ch.chapter_num;
+      card.innerHTML=
+        '<div class="ch-head">'
+        +'<div class="ch-toggle" onclick="toggleCh(''+chId+'')">'
+        +'<div class="ch-num">'+chNum2+'</div>'
+        +'<div class="ch-info"><h3>'+chName2+'</h3><p>Unit '+chUnits2+'</p></div>'
+        +'<div class="ch-arrow">›</div>'
+        +'</div>'
+        +'<div class="ch-actions">'
+        +'<button class="ch-btn voice" data-ch="'+chN2+'" data-chname="'+chName2+'" onclick="selectChapterFromBtn(this,'ch-voice')">'
+        +'<span class="cb-icon">🎤</span><span class="cb-label">설명하기</span>'
+        +'</button>'
+        +'<button class="ch-btn note" data-ch="'+chN2+'" data-chname="'+chName2+'" onclick="selectChapterFromBtn(this,'ch-note')">'
+        +'<span class="cb-icon">✏️</span><span class="cb-label">정리하기</span>'
+        +'</button>'
+        +'</div>'
+        +'</div>'
+        +'<div class="ch-progress">'
+        +'<div class="ch-prog-bar"><div class="ch-prog-fill" style="width:0%;"></div></div>'
+        +'<div class="ch-prog-text">0/'+chLen2+' 완료</div>'
+        +'</div>'
+        +'<div class="unit-list" id="ul-'+chId+'">'+unitRows+'</div>';
       chList.appendChild(card);
     });
   } catch(e){
     chList.innerHTML='<div style="text-align:center;padding:40px;color:var(--red);font-size:15px;">불러오기 실패.<br>네트워크를 확인하세요.</div>';
   }
+}
+
+// data 속성으로 Unit 선택
+function selectUnitFromBtn(btn, screen){
+  const chNum  = btn.dataset.ch;
+  const chName = btn.dataset.chname;
+  const uNum   = btn.dataset.u;
+  const uName  = btn.dataset.uname;
+  selectUnit(chNum, chName, uNum, uName, screen);
+}
+
+// data 속성으로 Chapter 선택
+function selectChapterFromBtn(btn, screen){
+  const chNum  = btn.dataset.ch;
+  const chName = btn.dataset.chname;
+  selectChapter(chNum, chName, screen);
 }
 
 // Unit 선택
@@ -1167,7 +1197,7 @@ function selectUnit(chNum,chName,uNum,uName,screen){
 }
 
 // Chapter 선택 (설명/정리)
-function selectChapter(chNum,chName,units,screen){
+function selectChapter(chNum,chName,screen){
   window._chapter={chapter_num:chNum,chapter_name:chName,units:units};
   const sub='Ch.'+String(chNum).padStart(2,'0')+' '+chName+' 전체';
   if(screen==='ch-voice'){
@@ -1645,10 +1675,7 @@ async function loadResults(cls, btn){
 
 // 마무리 — 해당 반 Chapter is_open → FALSE
 async function finishChapter(cls, chNum, btn){
-  if(!confirm(cls+'반 Ch.'+String(chNum).padStart(2,'0')+' 마무리하면
-학생 앱에서 이 Chapter가 사라져요.
-
-계속할까요?')) return;
+  if(!confirm(cls+'반 Ch.'+String(chNum).padStart(2,'0')+' 마무리하면\n학생 앱에서 이 Chapter가 사라져요.\n\n계속할까요?')) return;
   btn.textContent='처리 중...';btn.disabled=true;
   try{
     const json = await callAPI({action:'closeChapter',class:cls,chapter:chNum});
