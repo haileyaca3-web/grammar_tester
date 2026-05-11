@@ -499,20 +499,31 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);min-hei
     <div><div class="top-title">학생 결과 확인</div><div class="top-sub">반별 점수 현황</div></div>
   </div>
   <div class="content" style="padding-top:16px;">
-    <div style="background:#fff8ed;border:2px solid #fde8b5;border-radius:14px;padding:14px 16px;font-size:14px;color:#8a5a00;line-height:1.7;margin-bottom:16px;">
-      스프레드시트 [학생결과] 시트에서<br>전체 결과를 확인할 수 있습니다.
+
+    <!-- 반 선택 -->
+    <div style="font-size:12px;font-weight:700;color:#8a9ab0;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">반 선택</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      <button onclick="loadResults('5a',this)"  class="tr-cls-btn">5a</button>
+      <button onclick="loadResults('6a',this)"  class="tr-cls-btn">6a</button>
+      <button onclick="loadResults('1a',this)"  class="tr-cls-btn">1a</button>
+      <button onclick="loadResults('1b',this)"  class="tr-cls-btn">1b</button>
+      <button onclick="loadResults('2a',this)"  class="tr-cls-btn">2a</button>
+      <button onclick="loadResults('2b',this)"  class="tr-cls-btn">2b</button>
+      <button onclick="loadResults('2c',this)"  class="tr-cls-btn">2c</button>
+      <button onclick="loadResults('3a',this)"  class="tr-cls-btn">3a</button>
+      <button onclick="loadResults('3b',this)"  class="tr-cls-btn">3b</button>
+      <button onclick="loadResults('3c',this)"  class="tr-cls-btn">3c</button>
     </div>
-    <div style="background:#fff;border:2px solid #c8dff5;border-radius:18px;overflow:hidden;">
-      <div style="padding:14px 18px;border-bottom:1.5px solid #e0ecf8;font-size:15px;font-weight:800;color:#1a3a5c;">반 선택</div>
-      <div style="padding:16px 18px;display:flex;flex-direction:column;gap:8px;">
-        <button onclick="loadResults('5a')" style="padding:14px;border-radius:12px;border:2px solid #c8dff5;background:#f0f7ff;font-size:15px;font-weight:700;color:#2c6fb5;font-family:'Nunito','Noto Sans KR',sans-serif;cursor:pointer;">5a반 결과 보기</button>
-        <button onclick="loadResults('6a')" style="padding:14px;border-radius:12px;border:2px solid #c8dff5;background:#f0f7ff;font-size:15px;font-weight:700;color:#2c6fb5;font-family:'Nunito','Noto Sans KR',sans-serif;cursor:pointer;">6a반 결과 보기</button>
-      </div>
-    </div>
-    <div id="results-area" style="margin-top:14px;"></div>
+
+    <div id="results-area"></div>
     <div class="spacer"></div>
   </div>
 </div>
+
+<style>
+.tr-cls-btn{padding:9px 16px;border-radius:20px;border:2px solid #c8dff5;background:#fff;color:#5a7a9a;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito','Noto Sans KR',sans-serif;}
+.tr-cls-btn.on{background:#2c6fb5;border-color:#2c6fb5;color:#fff;}
+</style>
 
 <!-- ════ 메인 ════ -->
 <div id="screen-main" class="screen">
@@ -1576,7 +1587,14 @@ async function addStudent(){
 }
 
 // 결과 조회
-async function loadResults(cls){
+let currentResultClass = '';
+
+async function loadResults(cls, btn){
+  currentResultClass = cls;
+  // 반 버튼 활성화
+  document.querySelectorAll('.tr-cls-btn').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+
   const area = document.getElementById('results-area');
   area.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);">불러오는 중...</div>';
   try{
@@ -1585,20 +1603,68 @@ async function loadResults(cls){
       area.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);">결과가 없습니다.</div>';
       return;
     }
-    let html='<div style="background:#fff;border:2px solid #c8dff5;border-radius:18px;overflow:hidden;">';
-    html+='<div style="padding:14px 18px;border-bottom:1.5px solid #e0ecf8;font-size:15px;font-weight:800;color:#1a3a5c;">'+cls+'반 결과</div>';
+
+    // Chapter별 그룹핑
+    const chapters = {};
     json.data.forEach(r=>{
-      html+=`<div style="padding:13px 18px;border-bottom:1.5px solid #e0ecf8;font-size:14px;color:#3a5a7a;line-height:1.8;">
-        <strong style="color:#1a3a5c;">${r.student_name}</strong> · Ch${r.chapter_num} Unit${r.unit_num}<br>
-        빈칸 ${r.blank_score||'-'} / 문제 ${r.quiz_score||'-'} / 음성 ${r.voice_pct||'-'}%
-        ${r.voice_link?'<a href="'+r.voice_link+'" target="_blank" style="color:#2c6fb5;margin-left:8px;">음성</a>':''}
-        ${r.note_link?'<a href="'+r.note_link+'" target="_blank" style="color:#27ae60;margin-left:8px;">정리</a>':''}
-      </div>`;
+      const key = 'Ch'+String(r.chapter_num).padStart(2,'0');
+      if(!chapters[key]) chapters[key]={chapter_num:r.chapter_num,students:[]};
+      chapters[key].students.push(r);
     });
-    html+='</div>';
+
+    let html='';
+    Object.values(chapters).sort((a,b)=>a.chapter_num-b.chapter_num).forEach(ch=>{
+      html+=`<div style="background:#fff;border:2px solid #c8dff5;border-radius:18px;overflow:hidden;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;padding:14px 18px;border-bottom:1.5px solid #e0ecf8;gap:12px;">
+          <div style="width:40px;height:40px;background:linear-gradient(135deg,#2c6fb5,#4a90d9);color:#fff;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;">${String(ch.chapter_num).padStart(2,'0')}</div>
+          <div style="flex:1;font-size:16px;font-weight:800;color:#1a3a5c;">Chapter ${ch.chapter_num}</div>
+          <button onclick="finishChapter('${cls}',${ch.chapter_num},this)"
+            style="padding:8px 16px;border-radius:10px;border:2px solid #e74c3c;background:#fdf0ee;color:#e74c3c;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito','Noto Sans KR',sans-serif;white-space:nowrap;">
+            마무리
+          </button>
+        </div>`;
+
+      ch.students.forEach((r,i)=>{
+        const last = i===ch.students.length-1;
+        html+=`<div style="padding:13px 18px;${last?'':'border-bottom:1.5px solid #e0ecf8;'}font-size:14px;color:#3a5a7a;line-height:1.8;">
+          <strong style="color:#1a3a5c;">${r.student_name}</strong> · Unit ${r.unit_num}<br>
+          빈칸 <strong>${r.blank_score||'-'}</strong> &nbsp;/&nbsp; 문제 <strong>${r.quiz_score||'-'}</strong> &nbsp;/&nbsp; 음성 <strong>${r.voice_pct||'-'}%</strong>
+          ${r.voice_link?'<a href="'+r.voice_link+'" target="_blank" style="color:#2c6fb5;margin-left:10px;font-size:13px;">음성듣기</a>':''}
+          ${r.note_link?'<a href="'+r.note_link+'" target="_blank" style="color:#27ae60;margin-left:10px;font-size:13px;">정리보기</a>':''}
+        </div>`;
+      });
+
+      html+='</div>';
+    });
+
     area.innerHTML=html;
   } catch(e){
     area.innerHTML='<div style="text-align:center;padding:20px;color:var(--red);">불러오기 실패</div>';
+  }
+}
+
+// 마무리 — 해당 반 Chapter is_open → FALSE
+async function finishChapter(cls, chNum, btn){
+  if(!confirm(cls+'반 Ch.'+String(chNum).padStart(2,'0')+' 마무리하면
+학생 앱에서 이 Chapter가 사라져요.
+
+계속할까요?')) return;
+  btn.textContent='처리 중...';btn.disabled=true;
+  try{
+    const json = await callAPI({action:'closeChapter',class:cls,chapter:chNum});
+    if(json.ok){
+      btn.textContent='완료!';
+      btn.style.background='#eafaf1';
+      btn.style.borderColor='#27ae60';
+      btn.style.color='#27ae60';
+      setTimeout(()=>loadResults(cls, document.querySelector('.tr-cls-btn.on')), 1500);
+    } else {
+      btn.textContent='마무리';btn.disabled=false;
+      alert('오류: '+(json.message||'다시 시도해주세요.'));
+    }
+  } catch(e){
+    btn.textContent='마무리';btn.disabled=false;
+    alert('네트워크 오류');
   }
 }
 
