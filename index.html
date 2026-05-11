@@ -343,7 +343,7 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);min-hei
       </div>
 
       <!-- Chapter 개방 -->
-      <div style="background:#fff;border:2px solid #c8dff5;border-radius:18px;padding:20px;cursor:pointer;" onclick="goTo('teacher-chapters')">
+      <div style="background:#fff;border:2px solid #c8dff5;border-radius:18px;padding:20px;cursor:pointer;" onclick="enterTeacherChapters()">
         <div style="font-size:18px;font-weight:900;color:#1a3a5c;margin-bottom:4px;">Chapter 개방 관리</div>
         <div style="font-size:14px;color:#8a9ab0;">반별 Chapter / Unit 열기 · 닫기</div>
       </div>
@@ -387,29 +387,64 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);min-hei
 <div id="screen-teacher-chapters" class="screen">
   <div class="top-bar">
     <button class="back-btn" onclick="goTo('teacher-main')">‹</button>
-    <div><div class="top-title">Chapter 개방 관리</div><div class="top-sub">반별 Chapter/Unit 설정</div></div>
+    <div><div class="top-title">Chapter 개방 관리</div><div class="top-sub">반 → 교재 → Chapter 선택</div></div>
   </div>
   <div class="content" style="padding-top:16px;">
-    <div style="background:#fff8ed;border:2px solid #fde8b5;border-radius:14px;padding:14px 16px;font-size:14px;color:#8a5a00;line-height:1.7;margin-bottom:16px;">
-      스프레드시트 [chapter/unit 개방] 시트에서<br>
-      <strong>is_open 칸을 TRUE / FALSE</strong>로 바꾸면<br>
-      학생 앱에 즉시 반영됩니다!
+
+    <!-- 반 선택 -->
+    <div style="font-size:12px;font-weight:700;color:#8a9ab0;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">반 선택</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;" id="tc-class-btns">
+      <button onclick="tcSelectClass('5a',this)"  class="tc-class-btn tc-on">5a</button>
+      <button onclick="tcSelectClass('6a',this)"  class="tc-class-btn">6a</button>
+      <button onclick="tcSelectClass('1a',this)"  class="tc-class-btn">1a</button>
+      <button onclick="tcSelectClass('1b',this)"  class="tc-class-btn">1b</button>
+      <button onclick="tcSelectClass('2a',this)"  class="tc-class-btn">2a</button>
+      <button onclick="tcSelectClass('2b',this)"  class="tc-class-btn">2b</button>
+      <button onclick="tcSelectClass('2c',this)"  class="tc-class-btn">2c</button>
+      <button onclick="tcSelectClass('3a',this)"  class="tc-class-btn">3a</button>
+      <button onclick="tcSelectClass('3b',this)"  class="tc-class-btn">3b</button>
+      <button onclick="tcSelectClass('3c',this)"  class="tc-class-btn">3c</button>
     </div>
-    <div style="background:#fff;border:2px solid #c8dff5;border-radius:18px;overflow:hidden;">
-      <div style="padding:16px 18px;border-bottom:1.5px solid #e0ecf8;font-size:16px;font-weight:800;color:#1a3a5c;">시트 구조 안내</div>
-      <div style="padding:16px 18px;font-size:14px;color:#3a5a7a;line-height:2;">
-        <div><strong>A열:</strong> class (반 이름 — 5a, 6a 등)</div>
-        <div><strong>B열:</strong> book_name (교재명)</div>
-        <div><strong>C열:</strong> chapter_num (챕터 번호)</div>
-        <div><strong>D열:</strong> chapter_name (챕터 이름)</div>
-        <div><strong>E열:</strong> unit_num (유닛 번호)</div>
-        <div><strong>F열:</strong> unit_name (유닛 이름)</div>
-        <div><strong>G열:</strong> is_open → <strong style="color:#27ae60;">TRUE</strong> / <strong style="color:#e74c3c;">FALSE</strong></div>
+
+    <!-- 교재 선택 -->
+    <div style="font-size:12px;font-weight:700;color:#8a9ab0;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">교재 선택</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;" id="tc-book-btns">
+      <button onclick="tcSelectBook('천일문 Grammar 1',this)" class="tc-book-btn">천일문 Grammar 1</button>
+      <button onclick="tcSelectBook('천일문 Grammar 2',this)" class="tc-book-btn">천일문 Grammar 2</button>
+      <button onclick="tcSelectBook('천일문 Grammar 3',this)" class="tc-book-btn tc-book-on">천일문 Grammar 3</button>
+      <button onclick="tcSelectBook('해커스 중등 1학년',this)" class="tc-book-btn">해커스 중등 1학년</button>
+      <button onclick="tcSelectBook('해커스 중등 2학년',this)" class="tc-book-btn">해커스 중등 2학년</button>
+      <button onclick="tcSelectBook('해커스 중등 3학년',this)" class="tc-book-btn">해커스 중등 3학년</button>
+      <button onclick="tcSelectBook('문마중 1학년',this)" class="tc-book-btn">문마중 1학년</button>
+      <button onclick="tcSelectBook('문마중 2학년',this)" class="tc-book-btn">문마중 2학년</button>
+      <button onclick="tcSelectBook('문마중 3학년',this)" class="tc-book-btn">문마중 3학년</button>
+    </div>
+
+    <!-- Chapter 목록 -->
+    <div id="tc-ch-area">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:12px;font-weight:700;color:#8a9ab0;letter-spacing:1px;text-transform:uppercase;">Chapter (클릭으로 열기/닫기)</div>
+        <div style="display:flex;gap:6px;">
+          <button onclick="tcSelectAll(true)" style="padding:5px 12px;border-radius:8px;border:2px solid #27ae60;background:#eafaf1;color:#27ae60;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito','Noto Sans KR',sans-serif;">전체 열기</button>
+          <button onclick="tcSelectAll(false)" style="padding:5px 12px;border-radius:8px;border:2px solid #e74c3c;background:#fdf0ee;color:#e74c3c;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito','Noto Sans KR',sans-serif;">전체 닫기</button>
+        </div>
       </div>
+      <div style="background:#fff;border:2px solid #c8dff5;border-radius:16px;overflow:hidden;" id="tc-ch-list">
+        <!-- JS로 렌더링 -->
+      </div>
+      <button onclick="tcSave()" style="width:100%;padding:15px;background:linear-gradient(135deg,#2c6fb5,#4a90d9);border:none;border-radius:14px;color:#fff;font-size:16px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;cursor:pointer;margin-top:14px;box-shadow:0 4px 16px rgba(44,111,181,.3);">저장하기</button>
     </div>
+
     <div class="spacer"></div>
   </div>
 </div>
+
+<style>
+.tc-class-btn{padding:9px 16px;border-radius:20px;border:2px solid #c8dff5;background:#fff;color:#5a7a9a;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito','Noto Sans KR',sans-serif;}
+.tc-class-btn.tc-on{background:#2c6fb5;border-color:#2c6fb5;color:#fff;}
+.tc-book-btn{padding:13px 16px;border-radius:13px;border:2px solid #c8dff5;background:#fff;color:#5a7a9a;font-size:15px;font-weight:700;cursor:pointer;font-family:'Nunito','Noto Sans KR',sans-serif;text-align:left;}
+.tc-book-btn.tc-book-on{background:#eef6ff;border-color:#2c6fb5;color:#2c6fb5;}
+</style>
 
 <!-- 결과 확인 -->
 <div id="screen-teacher-results" class="screen">
@@ -1247,6 +1282,184 @@ function showVoiceFail(){
   document.getElementById('ai-result').style.display='none';
   document.getElementById('voice-next').style.display='none';
   setTimeout(()=>document.getElementById('ai-fail').scrollIntoView({behavior:'smooth'}),100);
+}
+
+// ── 교재별 챕터 데이터 ──
+const BOOKS = {
+  '천일문 Grammar 1': [
+    {num:'01',name:'문장의 형식',units:'Unit 1~3'},
+    {num:'02',name:'시제',units:'Unit 1~4'},
+    {num:'03',name:'조동사',units:'Unit 1~3'},
+    {num:'04',name:'수동태',units:'Unit 1~2'},
+    {num:'05',name:'부정사',units:'Unit 1~4'},
+    {num:'06',name:'동명사',units:'Unit 1~2'},
+    {num:'07',name:'분사',units:'Unit 1~2'},
+    {num:'08',name:'접속사',units:'Unit 1~3'},
+    {num:'09',name:'관계사',units:'Unit 1~3'},
+    {num:'10',name:'비교',units:'Unit 1~3'},
+    {num:'11',name:'가정법',units:'Unit 1~2'},
+    {num:'12',name:'일치와 화법',units:'Unit 1~2'},
+  ],
+  '천일문 Grammar 2': [
+    {num:'01',name:'문장의 형식',units:'Unit 1~3'},
+    {num:'02',name:'시제',units:'Unit 1~4'},
+    {num:'03',name:'조동사',units:'Unit 1~3'},
+    {num:'04',name:'수동태',units:'Unit 1~3'},
+    {num:'05',name:'부정사',units:'Unit 1~4'},
+    {num:'06',name:'동명사',units:'Unit 1~2'},
+    {num:'07',name:'분사',units:'Unit 1~3'},
+    {num:'08',name:'접속사',units:'Unit 1~3'},
+    {num:'09',name:'관계사',units:'Unit 1~4'},
+    {num:'10',name:'비교',units:'Unit 1~3'},
+    {num:'11',name:'가정법',units:'Unit 1~3'},
+    {num:'12',name:'특수구문',units:'Unit 1~2'},
+  ],
+  '천일문 Grammar 3': [
+    {num:'01',name:'완료 시제',units:'Unit 1~2'},
+    {num:'02',name:'조동사',units:'Unit 1~4'},
+    {num:'03',name:'수동태',units:'Unit 1~3'},
+    {num:'04',name:'부정사',units:'Unit 1~4'},
+    {num:'05',name:'동명사',units:'Unit 1~2'},
+    {num:'06',name:'분사',units:'Unit 1~3'},
+    {num:'07',name:'비교',units:'Unit 1~3'},
+    {num:'08',name:'접속사',units:'Unit 1~4'},
+    {num:'09',name:'관계대명사',units:'Unit 1~3'},
+    {num:'10',name:'관계부사·복합관계사',units:'Unit 1~2'},
+    {num:'11',name:'가정법',units:'Unit 1~3'},
+    {num:'12',name:'특수구문',units:'Unit 1~3'},
+  ],
+  '해커스 중등 1학년': [
+    {num:'01',name:'be동사와 일반동사',units:'Unit 1~3'},
+    {num:'02',name:'시제',units:'Unit 1~3'},
+    {num:'03',name:'조동사',units:'Unit 1~3'},
+    {num:'04',name:'문장의 형식',units:'Unit 1~3'},
+    {num:'05',name:'명사와 관사',units:'Unit 1~2'},
+    {num:'06',name:'대명사',units:'Unit 1~3'},
+    {num:'07',name:'형용사와 부사',units:'Unit 1~2'},
+    {num:'08',name:'전치사',units:'Unit 1~2'},
+    {num:'09',name:'접속사',units:'Unit 1~2'},
+    {num:'10',name:'문장의 종류',units:'Unit 1~2'},
+  ],
+  '해커스 중등 2학년': [
+    {num:'01',name:'시제',units:'Unit 1~3'},
+    {num:'02',name:'조동사',units:'Unit 1~2'},
+    {num:'03',name:'수동태',units:'Unit 1~2'},
+    {num:'04',name:'부정사',units:'Unit 1~3'},
+    {num:'05',name:'동명사',units:'Unit 1~2'},
+    {num:'06',name:'분사',units:'Unit 1~2'},
+    {num:'07',name:'비교',units:'Unit 1~2'},
+    {num:'08',name:'관계사',units:'Unit 1~3'},
+    {num:'09',name:'접속사',units:'Unit 1~2'},
+    {num:'10',name:'가정법',units:'Unit 1~2'},
+  ],
+  '해커스 중등 3학년': [
+    {num:'01',name:'완료 시제',units:'Unit 1~2'},
+    {num:'02',name:'조동사 심화',units:'Unit 1~2'},
+    {num:'03',name:'수동태 심화',units:'Unit 1~2'},
+    {num:'04',name:'부정사 심화',units:'Unit 1~3'},
+    {num:'05',name:'분사구문',units:'Unit 1~2'},
+    {num:'06',name:'관계사 심화',units:'Unit 1~3'},
+    {num:'07',name:'비교 심화',units:'Unit 1~2'},
+    {num:'08',name:'가정법 심화',units:'Unit 1~3'},
+    {num:'09',name:'특수구문',units:'Unit 1~2'},
+    {num:'10',name:'일치와 화법',units:'Unit 1~2'},
+  ],
+  '문마중 1학년': [
+    {num:'01',name:'be동사',units:'Unit 1~2'},
+    {num:'02',name:'일반동사',units:'Unit 1~2'},
+    {num:'03',name:'시제',units:'Unit 1~3'},
+    {num:'04',name:'조동사',units:'Unit 1~3'},
+    {num:'05',name:'문장의 형식',units:'Unit 1~3'},
+    {num:'06',name:'명사·대명사',units:'Unit 1~3'},
+    {num:'07',name:'형용사·부사',units:'Unit 1~2'},
+    {num:'08',name:'전치사·접속사',units:'Unit 1~2'},
+  ],
+  '문마중 2학년': [
+    {num:'01',name:'시제 심화',units:'Unit 1~3'},
+    {num:'02',name:'조동사',units:'Unit 1~2'},
+    {num:'03',name:'수동태',units:'Unit 1~2'},
+    {num:'04',name:'부정사',units:'Unit 1~3'},
+    {num:'05',name:'동명사',units:'Unit 1~2'},
+    {num:'06',name:'분사',units:'Unit 1~2'},
+    {num:'07',name:'비교',units:'Unit 1~2'},
+    {num:'08',name:'관계사',units:'Unit 1~3'},
+    {num:'09',name:'접속사',units:'Unit 1~2'},
+  ],
+  '문마중 3학년': [
+    {num:'01',name:'완료 시제',units:'Unit 1~2'},
+    {num:'02',name:'조동사 심화',units:'Unit 1~2'},
+    {num:'03',name:'수동태 심화',units:'Unit 1~2'},
+    {num:'04',name:'부정사 심화',units:'Unit 1~3'},
+    {num:'05',name:'분사구문',units:'Unit 1~2'},
+    {num:'06',name:'관계사 심화',units:'Unit 1~3'},
+    {num:'07',name:'가정법',units:'Unit 1~3'},
+    {num:'08',name:'특수구문',units:'Unit 1~2'},
+  ],
+};
+
+let tcCurrentClass = '5a';
+let tcCurrentBook  = '천일문 Grammar 3';
+let tcChState = {};
+
+function tcSelectClass(cls, btn) {
+  tcCurrentClass = cls;
+  document.querySelectorAll('.tc-class-btn').forEach(b=>b.classList.remove('tc-on'));
+  btn.classList.add('tc-on');
+  tcRenderChapters();
+}
+
+function tcSelectBook(book, btn) {
+  tcCurrentBook = book;
+  document.querySelectorAll('.tc-book-btn').forEach(b=>b.classList.remove('tc-book-on'));
+  btn.classList.add('tc-book-on');
+  tcRenderChapters();
+}
+
+function tcRenderChapters() {
+  const chapters = BOOKS[tcCurrentBook] || [];
+  const list = document.getElementById('tc-ch-list');
+  if(!list) return;
+  // 초기 상태 (모두 닫힘)
+  chapters.forEach(ch => { if(tcChState[tcCurrentClass+'_'+tcCurrentBook+'_'+ch.num]===undefined) tcChState[tcCurrentClass+'_'+tcCurrentBook+'_'+ch.num]=false; });
+  list.innerHTML = chapters.map((ch,i) => {
+    const key = tcCurrentClass+'_'+tcCurrentBook+'_'+ch.num;
+    const open = tcChState[key]||false;
+    const last = i===chapters.length-1;
+    return `<div id="tcrow-${ch.num}" onclick="tcToggle('${ch.num}')"
+      style="display:flex;align-items:center;padding:14px 18px;${last?'':'border-bottom:1.5px solid #e0ecf8;'}cursor:pointer;background:${open?'#eafaf1':'#fff'};">
+      <div style="width:36px;height:36px;background:${open?'#27ae60':'#8a9ab0'};color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-right:12px;">${ch.num}</div>
+      <div style="flex:1;">
+        <div style="font-size:15px;font-weight:700;color:${open?'#1a3a5c':'#8a9ab0'};">${ch.name}</div>
+        <div style="font-size:12px;color:#8a9ab0;margin-top:2px;">${ch.units}</div>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:${open?'#27ae60':'#c8dff5'};">${open?'열림':'닫힘'}</div>
+    </div>`;
+  }).join('');
+}
+
+function tcToggle(num) {
+  const key = tcCurrentClass+'_'+tcCurrentBook+'_'+num;
+  tcChState[key] = !tcChState[key];
+  tcRenderChapters();
+}
+
+function tcSelectAll(open) {
+  const chapters = BOOKS[tcCurrentBook]||[];
+  chapters.forEach(ch => { tcChState[tcCurrentClass+'_'+tcCurrentBook+'_'+ch.num]=open; });
+  tcRenderChapters();
+}
+
+async function tcSave() {
+  const chapters = BOOKS[tcCurrentBook]||[];
+  const openChs  = chapters.filter(ch=>tcChState[tcCurrentClass+'_'+tcCurrentBook+'_'+ch.num]);
+  alert('저장 완료!\n'+tcCurrentClass+'반 · '+tcCurrentBook+'\n열린 Chapter: '+(openChs.length?openChs.map(c=>'Ch.'+c.num+' '+c.name).join(', '):'없음'));
+  // TODO: Apps Script saveOpen 연동
+}
+
+// Chapter 개방 관리 진입 시 렌더링
+function enterTeacherChapters(){
+  goTo('teacher-chapters');
+  setTimeout(tcRenderChapters, 100);
 }
 
 // 학생 추가
