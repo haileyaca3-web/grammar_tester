@@ -1593,9 +1593,40 @@ function tcSelectAll(open) {
 
 async function tcSave() {
   const chapters = BOOKS[tcCurrentBook]||[];
-  const openChs  = chapters.filter(ch=>tcChState[tcCurrentClass+'_'+tcCurrentBook+'_'+ch.num]);
-  alert('저장 완료!\n'+tcCurrentClass+'반 · '+tcCurrentBook+'\n열린 Chapter: '+(openChs.length?openChs.map(c=>'Ch.'+c.num+' '+c.name).join(', '):'없음'));
-  // TODO: Apps Script saveOpen 연동
+  if(!chapters.length){alert('교재를 선택해주세요!');return;}
+
+  const btn = document.querySelector('#screen-teacher-chapters button[onclick="tcSave()"]');
+  if(btn){btn.textContent='저장 중...';btn.disabled=true;}
+
+  let success = 0;
+  let fail = 0;
+
+  for(const ch of chapters){
+    const key  = tcCurrentClass+'_'+tcCurrentBook+'_'+ch.num;
+    const open = tcChState[key] ? 'TRUE' : 'FALSE';
+    try{
+      await callAPI({
+        action:'saveOpen',
+        class:tcCurrentClass,
+        book:tcCurrentBook,
+        chapter:ch.num,
+        chapter_name:ch.name,
+        open:open
+      });
+      success++;
+    } catch(e){
+      fail++;
+    }
+  }
+
+  if(btn){btn.textContent='저장하기';btn.disabled=false;}
+
+  const openChs = chapters.filter(ch=>tcChState[tcCurrentClass+'_'+tcCurrentBook+'_'+ch.num]);
+  if(fail===0){
+    alert('저장 완료!\n'+tcCurrentClass+'반 · '+tcCurrentBook+'\n열린 Chapter: '+(openChs.length?openChs.map(c=>'Ch.'+c.num+' '+c.name).join(', '):'없음'));
+  } else {
+    alert('일부 저장 실패 ('+fail+'개)\n다시 시도해주세요.');
+  }
 }
 
 // Chapter 개방 관리 진입 시 렌더링
