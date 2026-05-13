@@ -1103,89 +1103,100 @@ async function doLogin(){
 
 // Chapter 불러오기
 async function loadChapters(cls){
-  const chList=document.getElementById('ch-list');
+  var chList=document.getElementById('ch-list');
   chList.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-size:15px;">불러오는 중...</div>';
   try{
-    const json=await callAPI({action:'getUnits',class:cls,book:'천일문 Grammar 3'});
+    var json=await callAPI({action:'getUnits',class:cls,book:'천일문 Grammar 3'});
     if(!json.ok||!json.data.length){
       chList.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-size:15px;">열린 Chapter가 없습니다.<br>선생님께 문의하세요.</div>';
       return;
     }
     chList.innerHTML='';
-    json.data.forEach((ch,idx)=>{
-      const chId='ch-dyn-'+idx;
-      const card=document.createElement('div');
+    json.data.forEach(function(ch,idx){
+      var chId='ch-dyn-'+idx;
+      var chNum2=String(ch.chapter_num).padStart(2,'0');
+      var chName2=ch.chapter_name;
+      var chUnits2=ch.units.map(function(u){return u.unit_num;}).join(', ');
+      var chLen2=ch.units.length;
+
+      // Unit 목록
+      var ul=document.createElement('div');
+      ul.className='unit-list';
+      ul.id='ul-'+chId;
+      ch.units.forEach(function(u){
+        var uNum=u.unit_num;
+        var uName=u.unit_name;
+        var row=document.createElement('div');
+        row.className='unit-row';
+        var dot=document.createElement('div');
+        dot.className='udot active';
+        var info=document.createElement('div');
+        info.className='uinfo';
+        info.innerHTML='<div class="unum">Unit '+uNum+'</div><div class="uname">'+uName+'</div>';
+        var btns=document.createElement('div');
+        btns.className='unit-btns';
+        [['summary','내용'],['blanks','빈칸'],['quiz','문제']].forEach(function(pair){
+          var b=document.createElement('button');
+          b.className='unit-btn';
+          b.textContent=pair[1];
+          (function(sc,chn,chnm,un,unm){
+            b.addEventListener('click',function(){selectUnit(chn,chnm,un,unm,sc);});
+          })(pair[0],ch.chapter_num,ch.chapter_name,uNum,uName);
+          btns.appendChild(b);
+        });
+        row.appendChild(dot);
+        row.appendChild(info);
+        row.appendChild(btns);
+        ul.appendChild(row);
+      });
+
+      // Chapter 카드
+      var card=document.createElement('div');
       card.className='ch-card open';
       card.id=chId;
-      const unitRows=ch.units.map(u=>`
-        <div class="unit-row">
-          <div class="udot active"></div>
-          <div class="uinfo">
-            <div class="unum">Unit ${u.unit_num}</div>
-            <div class="uname">${u.unit_name}</div>
-          </div>
-          <div class="unit-btns">
-            <button class="unit-btn"
-              data-ch="${ch.chapter_num}" data-chname="${ch.chapter_name}"
-              data-u="${u.unit_num}" data-uname="${u.unit_name}"
-              onclick="selectUnitFromBtn(this,'summary')">내용</button>
-            <button class="unit-btn"
-              data-ch="${ch.chapter_num}" data-chname="${ch.chapter_name}"
-              data-u="${u.unit_num}" data-uname="${u.unit_name}"
-              onclick="selectUnitFromBtn(this,'blanks')">빈칸</button>
-            <button class="unit-btn"
-              data-ch="${ch.chapter_num}" data-chname="${ch.chapter_name}"
-              data-u="${u.unit_num}" data-uname="${u.unit_name}"
-              onclick="selectUnitFromBtn(this,'quiz')">문제</button>
-          </div>
-        </div>`).join('');
-      const chNum2 = String(ch.chapter_num).padStart(2,'0');
-      const chName2 = ch.chapter_name;
-      const chUnits2 = ch.units.map(u=>u.unit_num).join(', ');
-      const chLen2 = ch.units.length;
-      const chN2 = ch.chapter_num;
-      card.innerHTML=
-        '<div class="ch-head">'
-        +'<div class="ch-toggle" onclick="toggleCh(''+chId+'')">'
-        +'<div class="ch-num">'+chNum2+'</div>'
+
+      var head=document.createElement('div');
+      head.className='ch-head';
+
+      var toggle=document.createElement('div');
+      toggle.className='ch-toggle';
+      (function(cid){toggle.addEventListener('click',function(){toggleCh(cid);});})(chId);
+      toggle.innerHTML='<div class="ch-num">'+chNum2+'</div>'
         +'<div class="ch-info"><h3>'+chName2+'</h3><p>Unit '+chUnits2+'</p></div>'
-        +'<div class="ch-arrow">›</div>'
-        +'</div>'
-        +'<div class="ch-actions">'
-        +'<button class="ch-btn voice" data-ch="'+chN2+'" data-chname="'+chName2+'" onclick="selectChapterFromBtn(this,'ch-voice')">'
-        +'<span class="cb-icon">🎤</span><span class="cb-label">설명하기</span>'
-        +'</button>'
-        +'<button class="ch-btn note" data-ch="'+chN2+'" data-chname="'+chName2+'" onclick="selectChapterFromBtn(this,'ch-note')">'
-        +'<span class="cb-icon">✏️</span><span class="cb-label">정리하기</span>'
-        +'</button>'
-        +'</div>'
-        +'</div>'
-        +'<div class="ch-progress">'
-        +'<div class="ch-prog-bar"><div class="ch-prog-fill" style="width:0%;"></div></div>'
-        +'<div class="ch-prog-text">0/'+chLen2+' 완료</div>'
-        +'</div>'
-        +'<div class="unit-list" id="ul-'+chId+'">'+unitRows+'</div>';
+        +'<div class="ch-arrow">&#8250;</div>';
+
+      var actions=document.createElement('div');
+      actions.className='ch-actions';
+
+      var vBtn=document.createElement('button');
+      vBtn.className='ch-btn voice';
+      vBtn.innerHTML='<span class="cb-icon">&#127908;</span><span class="cb-label">설명하기</span>';
+      (function(chn,chnm){vBtn.addEventListener('click',function(){selectChapter(chn,chnm,'ch-voice');});})(ch.chapter_num,ch.chapter_name);
+
+      var nBtn=document.createElement('button');
+      nBtn.className='ch-btn note';
+      nBtn.innerHTML='<span class="cb-icon">&#9999;</span><span class="cb-label">정리하기</span>';
+      (function(chn,chnm){nBtn.addEventListener('click',function(){selectChapter(chn,chnm,'ch-note');});})(ch.chapter_num,ch.chapter_name);
+
+      actions.appendChild(vBtn);
+      actions.appendChild(nBtn);
+      head.appendChild(toggle);
+      head.appendChild(actions);
+
+      var prog=document.createElement('div');
+      prog.className='ch-progress';
+      prog.innerHTML='<div class="ch-prog-bar"><div class="ch-prog-fill" style="width:0%;"></div></div>'
+        +'<div class="ch-prog-text">0/'+chLen2+' 완료</div>';
+
+      card.appendChild(head);
+      card.appendChild(prog);
+      card.appendChild(ul);
       chList.appendChild(card);
     });
-  } catch(e){
+  } catch(err){
+    console.error(err);
     chList.innerHTML='<div style="text-align:center;padding:40px;color:var(--red);font-size:15px;">불러오기 실패.<br>네트워크를 확인하세요.</div>';
   }
-}
-
-// data 속성으로 Unit 선택
-function selectUnitFromBtn(btn, screen){
-  const chNum  = btn.dataset.ch;
-  const chName = btn.dataset.chname;
-  const uNum   = btn.dataset.u;
-  const uName  = btn.dataset.uname;
-  selectUnit(chNum, chName, uNum, uName, screen);
-}
-
-// data 속성으로 Chapter 선택
-function selectChapterFromBtn(btn, screen){
-  const chNum  = btn.dataset.ch;
-  const chName = btn.dataset.chname;
-  selectChapter(chNum, chName, screen);
 }
 
 // Unit 선택
