@@ -566,226 +566,47 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);min-hei
 <!-- ════ 내용정리 ════ -->
 <div id="screen-summary" class="screen">
   <div class="top-bar">
-    <button class="back-btn" onclick="goTo('main')">‹</button>
-    <div><div class="top-title">내용정리</div><div class="top-sub" id="summary-sub">Ch.01 Unit 1 · 현재완료</div></div>
+    <button class="back-btn" onclick="goTo('main')">&#8249;</button>
+    <div><div class="top-title">내용정리</div><div class="top-sub" id="summary-sub">불러오는 중...</div></div>
     <div class="badge" style="background:var(--blue-bg);color:var(--blue);border:2px solid var(--border);">내용보기</div>
   </div>
-  <div class="content">
-    <div class="pt-card">
-      <div class="pt-head"><div class="pt-tag" style="background:var(--dark);color:#fff;">개요</div><strong style="font-size:15px;">현재완료 — have[has] + p.p.</strong></div>
-      <div class="pt-body">
-        <div class="formula">have[has] + p.p.</div>
-        <div class="key-rule">과거에 일어난 일이 <strong>현재까지 영향</strong>을 줄 때 사용. <strong>계속 / 경험 / 완료 / 결과</strong>의 의미.</div>
-        <div class="key-rule" style="border-color:var(--muted);font-size:13px;">부정문: have[has] not + p.p.&nbsp;&nbsp;|&nbsp;&nbsp;의문문: Have[Has] + 주어 + p.p. ~?</div>
-      </div>
+  <div class="content" id="summary-content">
+    <div style="text-align:center;padding:60px 20px;">
+      <div style="font-size:40px;margin-bottom:16px;">📖</div>
+      <div style="font-size:16px;color:var(--muted);">내용을 불러오는 중...</div>
     </div>
-    <div class="pt-card">
-      <div class="pt-head"><div class="pt-tag" style="background:var(--blue-bg);color:var(--blue);border:2px solid var(--border);">POINT 1 빈출</div><strong style="font-size:15px;">계속 — 지금까지 쭉 ~해 왔다</strong></div>
-      <div class="pt-body">
-        <div class="key-rule">과거부터 <strong>현재까지 계속</strong>되는 상태/동작</div>
-        <div class="adv-grid">
-          <div class="adv-item"><div class="adv-en">for + 기간</div><div class="adv-kr">~ 동안</div></div>
-          <div class="adv-item"><div class="adv-en">since + 시점</div><div class="adv-kr">~ 이후로</div></div>
-          <div class="adv-item"><div class="adv-en">how long</div><div class="adv-kr">얼마나</div></div>
-          <div class="adv-item"><div class="adv-en">so far</div><div class="adv-kr">지금까지</div></div>
-        </div>
-        <div class="ex-item"><div class="ex-en">He <span class="kw">has worked</span> as a pilot <span class="kw">for five years</span>.</div><div class="ex-kr">그는 5년간 파일럿으로 일해 왔다.</div></div>
-        <div class="ex-item"><div class="ex-en">I <span class="kw">have attended</span> dance classes <span class="kw">since last year</span>.</div><div class="ex-kr">나는 작년부터 댄스 수업에 참여해 왔다.</div></div>
-      </div>
-    </div>
-    <div class="pt-card">
-      <div class="pt-head"><div class="pt-tag" style="background:var(--purple-bg);color:var(--purple);border:2px solid var(--purple-border);">POINT 2 빈출</div><strong style="font-size:15px;">경험 — ~한 적이 있다</strong></div>
-      <div class="pt-body">
-        <div class="key-rule" style="border-color:var(--purple);background:var(--purple-bg);">지금까지 <strong>얼마나 경험했는지</strong>를 나타냄</div>
-        <div class="adv-grid">
-          <div class="adv-item" style="background:var(--purple-bg);"><div class="adv-en" style="color:var(--purple);">ever</div><div class="adv-kr">~한 적 있니?</div></div>
-          <div class="adv-item" style="background:var(--purple-bg);"><div class="adv-en" style="color:var(--purple);">never</div><div class="adv-kr">~한 적 없다</div></div>
-          <div class="adv-item" style="background:var(--purple-bg);"><div class="adv-en" style="color:var(--purple);">before</div><div class="adv-kr">이전에</div></div>
-          <div class="adv-item" style="background:var(--purple-bg);"><div class="adv-en" style="color:var(--purple);">once / twice</div><div class="adv-kr">한번 / 두번</div></div>
-        </div>
-        <div class="ex-item"><div class="ex-en"><span class="kw">Have</span> you <span class="kw">ever gone</span> camping in the woods?</div><div class="ex-kr">너는 숲에서 캠핑을 해 본 적이 있니?</div></div>
-      </div>
-    </div>
-    <div class="pt-card">
-      <div class="pt-head"><div class="pt-tag" style="background:var(--gold-bg);color:var(--gold);border:2px solid #fde8b5;">POINT 3</div><strong style="font-size:15px;">완료 — 막 ~했다</strong></div>
-      <div class="pt-body">
-        <div class="adv-grid">
-          <div class="adv-item" style="background:var(--gold-bg);"><div class="adv-en" style="color:var(--gold);">already / just</div><div class="adv-kr">이미 / 이제 막</div></div>
-          <div class="adv-item" style="background:var(--gold-bg);"><div class="adv-en" style="color:var(--gold);">yet / lately</div><div class="adv-kr">아직(부정) / 최근에</div></div>
-        </div>
-        <div class="caution">already·just → have와 p.p. 사이. yet·lately → 문장 끝!</div>
-      </div>
-    </div>
-    <div class="pt-card">
-      <div class="pt-head"><div class="pt-tag" style="background:var(--red-bg);color:var(--red);border:2px solid #f5b7b1;">POINT 4~5</div><strong style="font-size:15px;">결과 / 과거 부사 주의</strong></div>
-      <div class="pt-body">
-        <div class="ex-item"><div class="ex-en">My neighbors <span class="kw">have gone</span> to their country.</div><div class="ex-kr">이웃들은 가버렸다. (지금 없음)</div></div>
-        <div class="caution">ago · last · yesterday · in+연도 → 현재완료와 함께 불가!</div>
-      </div>
-    </div>
-    <div class="pt-card">
-      <div class="pt-head"><div class="pt-tag" style="background:var(--green-bg);color:var(--green);border:2px solid #a8e6c0;">POINT 6 빈출</div><div><strong style="font-size:15px;">현재완료진행형</strong><div style="font-size:12px;color:var(--muted);margin-top:2px;">have[has] been + -ing</div></div></div>
-      <div class="pt-body">
-        <div class="formula" style="background:var(--green);">have[has] been + V-ing</div>
-        <div class="ex-item"><div class="ex-en">I<span class="kw">'ve been waiting</span> for you for two hours.</div><div class="ex-kr">나는 두 시간째 너를 기다리고 있다.</div></div>
-        <div class="caution">감정·소유·인식 동사는 진행형 불가 (know, like, have 등)</div>
-      </div>
-    </div>
-    <button class="btn btn-blue" onclick="goTo('blanks')">빈칸 채우기 시작</button>
-    <div class="spacer"></div>
   </div>
 </div>
 
-<!-- ════ 빈칸 채우기 ════ -->
 <div id="screen-blanks" class="screen">
   <div class="top-bar">
-    <button class="back-btn" onclick="goTo('main')">‹</button>
-    <div><div class="top-title">빈칸 채우기</div><div class="top-sub">10문제 · 15분</div></div>
+    <button class="back-btn" onclick="goTo('main')">&#8249;</button>
+    <div><div class="top-title">빈칸 채우기</div><div class="top-sub" id="blanks-sub">10문제 · 15분</div></div>
     <div class="badge" style="background:var(--gold-bg);color:var(--gold);border:2px solid #fde8b5;">빈칸</div>
   </div>
   <div class="prog-bar"><div class="prog-fill" id="bprog" style="width:10%;background:var(--gold);"></div></div>
-  <div class="content" style="padding-top:16px;">
-    <div class="quiz-meta">
-      <span class="q-count" id="bcount">1 / 10</span>
-      <span class="q-timer" id="btimer">15:00</span>
+  <div class="content" id="blanks-content">
+    <div style="text-align:center;padding:60px 20px;">
+      <div style="font-size:40px;margin-bottom:16px;">✏️</div>
+      <div style="font-size:16px;color:var(--muted);">문제를 불러오는 중...</div>
     </div>
-    <div id="bq1" class="blank-card">
-      <div class="blank-num">Q1 · POINT 1 계속</div>
-      <div class="blank-hint">괄호 안 동사를 현재완료형으로 쓰세요. (work)</div>
-      <div class="blank-sent">He <input class="blank-input" id="bi1" placeholder="?"> as a pilot for five years.</div>
-      <div class="blank-tr">그는 5년간 파일럿으로 일해 왔다.</div>
-      <button class="check-btn" onclick="chk(1,'has worked','bi1','bf1')">확인</button>
-      <div class="fb" id="bf1"></div>
-      <div class="opts-area" id="opts1" style="display:none;"></div>
-    </div>
-    <div id="bq2" class="blank-card" style="display:none">
-      <div class="blank-num">Q2 · POINT 1 계속</div>
-      <div class="blank-hint">괄호 안 동사를 현재완료형으로 쓰세요. (attend)</div>
-      <div class="blank-sent">I <input class="blank-input" id="bi2" placeholder="?" style="min-width:145px;"> dance classes since last year.</div>
-      <div class="blank-tr">나는 작년부터 댄스 수업에 참여해 왔다.</div>
-      <button class="check-btn" onclick="chk(2,'have attended','bi2','bf2')">확인</button>
-      <div class="fb" id="bf2"></div>
-      <div class="opts-area" id="opts2" style="display:none;"></div>
-    </div>
-    <div id="bq3" class="blank-card" style="display:none">
-      <div class="blank-num">Q3 · POINT 2 경험</div>
-      <div class="blank-hint">괄호 안 동사를 알맞은 형태로 쓰세요. (go)</div>
-      <div class="blank-sent">Have you ever <input class="blank-input" id="bi3" placeholder="?"> camping in the woods?</div>
-      <div class="blank-tr">너는 숲에서 캠핑을 해 본 적이 있니?</div>
-      <button class="check-btn" onclick="chk(3,'gone','bi3','bf3')">확인</button>
-      <div class="fb" id="bf3"></div>
-      <div class="opts-area" id="opts3" style="display:none;"></div>
-    </div>
-    <div id="bq4" class="blank-card" style="display:none">
-      <div class="blank-num">Q4 · POINT 2 경험</div>
-      <div class="blank-hint">괄호 안 동사를 현재완료형으로 쓰세요. (visit)</div>
-      <div class="blank-sent">My family <input class="blank-input" id="bi4" placeholder="?" style="min-width:145px;"> New York before.</div>
-      <div class="blank-tr">우리 가족은 전에 뉴욕을 방문한 적이 있다.</div>
-      <button class="check-btn" onclick="chk(4,'has visited','bi4','bf4')">확인</button>
-      <div class="fb" id="bf4"></div>
-      <div class="opts-area" id="opts4" style="display:none;"></div>
-    </div>
-    <div id="bq5" class="blank-card" style="display:none">
-      <div class="blank-num">Q5 · POINT 3 완료</div>
-      <div class="blank-hint">괄호 안 동사를 현재완료형으로 쓰세요. (see)</div>
-      <div class="blank-sent">Mike has already <input class="blank-input" id="bi5" placeholder="?"> the new movie.</div>
-      <div class="blank-tr">Mike는 이미 새 영화를 봤다.</div>
-      <button class="check-btn" onclick="chk(5,'seen','bi5','bf5')">확인</button>
-      <div class="fb" id="bf5"></div>
-      <div class="opts-area" id="opts5" style="display:none;"></div>
-    </div>
-    <div id="bq6" class="blank-card" style="display:none">
-      <div class="blank-num">Q6 · POINT 3 완료</div>
-      <div class="blank-hint">괄호 안 동사를 현재완료 부정형으로 쓰세요. (finish)</div>
-      <div class="blank-sent">I <input class="blank-input" id="bi6" placeholder="?" style="min-width:165px;"> my homework yet.</div>
-      <div class="blank-tr">나는 아직 숙제를 끝내지 못했다.</div>
-      <button class="check-btn" onclick="chk(6,`haven't finished`,'bi6','bf6')">확인</button>
-      <div class="fb" id="bf6"></div>
-      <div class="opts-area" id="opts6" style="display:none;"></div>
-    </div>
-    <div id="bq7" class="blank-card" style="display:none">
-      <div class="blank-num">Q7 · POINT 4 결과</div>
-      <div class="blank-hint">괄호 안 동사를 현재완료형으로 쓰세요. (go)</div>
-      <div class="blank-sent">My neighbors <input class="blank-input" id="bi7" placeholder="?" style="min-width:135px;"> to their country.</div>
-      <div class="blank-tr">내 이웃들은 고향에 가버렸다. (지금 없다)</div>
-      <button class="check-btn" onclick="chk(7,'have gone','bi7','bf7')">확인</button>
-      <div class="fb" id="bf7"></div>
-      <div class="opts-area" id="opts7" style="display:none;"></div>
-    </div>
-    <div id="bq8" class="blank-card" style="display:none">
-      <div class="blank-num">Q8 · POINT 4 결과 vs 경험</div>
-      <div class="blank-hint">have been to / have gone to 중 알맞은 것을 쓰세요. (경험)</div>
-      <div class="blank-sent">She <input class="blank-input" id="bi8" placeholder="?" style="min-width:150px;"> Africa. (가 본 적이 있다)</div>
-      <div class="blank-tr">그녀는 아프리카에 가 본 적이 있다.</div>
-      <button class="check-btn" onclick="chk(8,'has been to','bi8','bf8')">확인</button>
-      <div class="fb" id="bf8"></div>
-      <div class="opts-area" id="opts8" style="display:none;"></div>
-    </div>
-    <div id="bq9" class="blank-card" style="display:none">
-      <div class="blank-num">Q9 · POINT 5 과거 부사 주의</div>
-      <div class="blank-hint">last가 있으므로 과거시제로 쓰세요. (visit)</div>
-      <div class="blank-sent">We <input class="blank-input" id="bi9" placeholder="?" style="min-width:125px;"> our grandmother's farm last summer.</div>
-      <div class="blank-tr">우리는 지난여름에 할머니 농장을 방문했다.</div>
-      <button class="check-btn" onclick="chk(9,'visited','bi9','bf9')">확인</button>
-      <div class="fb" id="bf9"></div>
-      <div class="opts-area" id="opts9" style="display:none;"></div>
-    </div>
-    <div id="bq10" class="blank-card" style="display:none">
-      <div class="blank-num">Q10 · POINT 6 현재완료진행</div>
-      <div class="blank-hint">현재완료진행형으로 쓰세요. (wait)</div>
-      <div class="blank-sent">I <input class="blank-input" id="bi10" placeholder="?" style="min-width:170px;"> for you at the cafe for two hours.</div>
-      <div class="blank-tr">나는 카페에서 두 시간째 너를 기다리고 있다.</div>
-      <button class="check-btn" onclick="chk(10,'have been waiting','bi10','bf10')">확인</button>
-      <div class="fb" id="bf10"></div>
-      <div class="opts-area" id="opts10" style="display:none;"></div>
-    </div>
-    <div id="blank-done" style="display:none;text-align:center;padding:28px 0;">
-      <div style="font-size:48px;margin-bottom:12px;">✅</div>
-      <h3 style="font-size:20px;font-weight:900;margin-bottom:8px;">빈칸 완료!</h3>
-      <p style="color:var(--muted);font-size:14px;margin-bottom:22px;" id="blank-result"></p>
-      <button class="btn btn-blue" onclick="goTo('quiz')">문제 풀기 시작</button>
-    </div>
-    <div class="spacer"></div>
   </div>
 </div>
 
-<!-- ════ 문제풀기 ════ -->
 <div id="screen-quiz" class="screen">
   <div class="top-bar">
-    <button class="back-btn" onclick="goTo('main')">‹</button>
-    <div><div class="top-title">문제 풀기</div><div class="top-sub" id="quiz-sub">Ch.01 Unit 1 · 현재완료</div></div>
+    <button class="back-btn" onclick="goTo('main')">&#8249;</button>
+    <div><div class="top-title">문제 풀기</div><div class="top-sub" id="quiz-sub">불러오는 중...</div></div>
     <div class="badge" style="background:var(--red-bg);color:var(--red);border:2px solid #f5b7b1;">문제</div>
   </div>
-  <div class="content" style="padding-top:16px;">
-    <div class="diff-tabs">
-      <div class="diff-tab e-on" id="tab-e"><div class="di">🟢</div><div class="dl">쉬움</div><div class="dc">10문제</div></div>
-      <div class="diff-tab locked-tab" id="tab-m"><div class="di">🟡</div><div class="dl">보통</div><div class="dc">10문제</div></div>
-      <div class="diff-tab locked-tab" id="tab-h"><div class="di">🔴</div><div class="dl">도전</div><div class="dc">10문제</div></div>
+  <div class="content" id="quiz-content">
+    <div style="text-align:center;padding:60px 20px;">
+      <div style="font-size:40px;margin-bottom:16px;">📝</div>
+      <div style="font-size:16px;color:var(--muted);">문제를 불러오는 중...</div>
     </div>
-    <div id="qe">
-      <div class="q-info-bar">🟢 쉬움 난이도 <span>10문제</span></div>
-      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">1. 빈칸에 알맞은 것은?<br><br>She ______ to Jeju Island several times.</div><div class="opts" id="e1"><div class="opt" onclick="po(this,'e1',false)"><div class="opt-n">①</div>went</div><div class="opt" onclick="po(this,'e1',false)"><div class="opt-n">②</div>goes</div><div class="opt" onclick="po(this,'e1',true)"><div class="opt-n">③</div>has been</div><div class="opt" onclick="po(this,'e1',false)"><div class="opt-n">④</div>have gone</div></div></div>
-      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">2. 현재완료와 함께 쓸 수 없는 표현은?</div><div class="opts" id="e2"><div class="opt" onclick="po(this,'e2',false)"><div class="opt-n">①</div>for three years</div><div class="opt" onclick="po(this,'e2',false)"><div class="opt-n">②</div>since last week</div><div class="opt" onclick="po(this,'e2',true)"><div class="opt-n">③</div>two days ago</div><div class="opt" onclick="po(this,'e2',false)"><div class="opt-n">④</div>already</div></div></div>
-      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">3. 다음 현재완료의 의미는?<br><br><em>"I have just finished my homework."</em></div><div class="opts" id="e3"><div class="opt" onclick="po(this,'e3',false)"><div class="opt-n">①</div>계속</div><div class="opt" onclick="po(this,'e3',false)"><div class="opt-n">②</div>경험</div><div class="opt" onclick="po(this,'e3',true)"><div class="opt-n">③</div>완료</div><div class="opt" onclick="po(this,'e3',false)"><div class="opt-n">④</div>결과</div></div></div>
-      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">4. I ______ never studied all night for an exam.</div><div class="opts" id="e4"><div class="opt" onclick="po(this,'e4',false)"><div class="opt-n">①</div>do</div><div class="opt" onclick="po(this,'e4',true)"><div class="opt-n">②</div>have</div><div class="opt" onclick="po(this,'e4',false)"><div class="opt-n">③</div>had</div><div class="opt" onclick="po(this,'e4',false)"><div class="opt-n">④</div>has</div></div></div>
-      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">5. 어법상 알맞은 문장은?</div><div class="opts" id="e5"><div class="opt" onclick="po(this,'e5',false)"><div class="opt-n">①</div>I have seen him yesterday.</div><div class="opt" onclick="po(this,'e5',true)"><div class="opt-n">②</div>She has worked here for 3 years.</div><div class="opt" onclick="po(this,'e5',false)"><div class="opt-n">③</div>They have visited Paris last year.</div><div class="opt" onclick="po(this,'e5',false)"><div class="opt-n">④</div>He have gone to school.</div></div></div>
-      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">6. "경험"을 나타내는 현재완료 문장은?</div><div class="opts" id="e6"><div class="opt" onclick="po(this,'e6',false)"><div class="opt-n">①</div>He has worked here for 10 years.</div><div class="opt" onclick="po(this,'e6',true)"><div class="opt-n">②</div>Have you ever eaten sushi?</div><div class="opt" onclick="po(this,'e6',false)"><div class="opt-n">③</div>She has just arrived home.</div><div class="opt" onclick="po(this,'e6',false)"><div class="opt-n">④</div>My keys have gone missing.</div></div></div>
-      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">7. Mike has ______ seen the new movie. (이미)</div><div class="opts" id="e7"><div class="opt" onclick="po(this,'e7',false)"><div class="opt-n">①</div>yet</div><div class="opt" onclick="po(this,'e7',true)"><div class="opt-n">②</div>already</div><div class="opt" onclick="po(this,'e7',false)"><div class="opt-n">③</div>since</div><div class="opt" onclick="po(this,'e7',false)"><div class="opt-n">④</div>for</div></div></div>
-      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">8. She ______ Africa. (가버렸다, 지금 여기 없음)</div><div class="opts" id="e8"><div class="opt" onclick="po(this,'e8',false)"><div class="opt-n">①</div>has been to</div><div class="opt" onclick="po(this,'e8',true)"><div class="opt-n">②</div>has gone to</div><div class="opt" onclick="po(this,'e8',false)"><div class="opt-n">③</div>had been to</div><div class="opt" onclick="po(this,'e8',false)"><div class="opt-n">④</div>had gone to</div></div></div>
-      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">9. 현재완료진행형의 형태는?</div><div class="opts" id="e9"><div class="opt" onclick="po(this,'e9',false)"><div class="opt-n">①</div>have + p.p.</div><div class="opt" onclick="po(this,'e9',false)"><div class="opt-n">②</div>be + -ing</div><div class="opt" onclick="po(this,'e9',true)"><div class="opt-n">③</div>have been + -ing</div><div class="opt" onclick="po(this,'e9',false)"><div class="opt-n">④</div>had been + -ing</div></div></div>
-      <div class="q-card"><div class="q-badge">객관식</div><div class="q-text">10. How long ______ you lived here?</div><div class="opts" id="e10"><div class="opt" onclick="po(this,'e10',false)"><div class="opt-n">①</div>do</div><div class="opt" onclick="po(this,'e10',false)"><div class="opt-n">②</div>did</div><div class="opt" onclick="po(this,'e10',true)"><div class="opt-n">③</div>have</div><div class="opt" onclick="po(this,'e10',false)"><div class="opt-n">④</div>had</div></div></div>
-    </div>
-    <div id="qm" style="display:none"><div class="q-info-bar">🟡 보통 난이도 <span>10문제</span></div><div class="q-card"><div class="q-badge">빈칸완성</div><div class="q-text">1. I ______ (attend) dance classes since last year.</div><div class="opts" id="m1"><div class="opt" onclick="po(this,'m1',false)"><div class="opt-n">①</div>attended</div><div class="opt" onclick="po(this,'m1',true)"><div class="opt-n">②</div>have attended</div><div class="opt" onclick="po(this,'m1',false)"><div class="opt-n">③</div>was attending</div><div class="opt" onclick="po(this,'m1',false)"><div class="opt-n">④</div>had attended</div></div></div><p style="text-align:center;color:var(--muted);font-size:14px;padding:20px;">보통 2~10번 문제</p></div>
-    <div id="qh" style="display:none"><div class="q-info-bar">🔴 도전 난이도 <span>10문제</span></div><div class="q-card"><div class="q-badge">어법오류</div><div class="q-text">1. 어법상 알맞지 않은 문장은?</div><div class="opts" id="h1"><div class="opt" onclick="po(this,'h1',false)"><div class="opt-n">①</div>Have you ever met any famous person before?</div><div class="opt" onclick="po(this,'h1',false)"><div class="opt-n">②</div>My uncle has already bought a sports car.</div><div class="opt" onclick="po(this,'h1',true)"><div class="opt-n">③</div>He has gone to Los Angeles once.</div><div class="opt" onclick="po(this,'h1',false)"><div class="opt-n">④</div>I've been waiting for the bus for 30 minutes.</div></div><div class="hint-box">have gone to는 결과 → once(경험)와 함께 쓰면 어색. have been to가 맞음</div></div><p style="text-align:center;color:var(--muted);font-size:14px;padding:20px;">도전 2~10번 문제</p></div>
-    <div class="next-diff-area" id="next-diff-area" style="display:none;">
-      <button class="btn btn-blue" id="next-diff-btn" onclick="goNextDiff()">보통 단계로 →</button>
-    </div>
-    <button class="btn btn-outline" style="margin-top:10px;" onclick="goTo('result')">결과 보기 (지금까지 저장됨)</button>
-    <div class="spacer"></div>
   </div>
 </div>
 
-<!-- ════ 결과 ════ -->
 <div id="screen-result" class="screen">
   <div class="result-hero">
     <div class="medal-big">🥈</div>
@@ -1203,8 +1024,243 @@ async function loadChapters(cls){
 function selectUnit(chNum,chName,uNum,uName,screen){
   window._unit={chapter_num:chNum,chapter_name:chName,unit_num:uNum,unit_name:uName};
   const sub='Ch.'+String(chNum).padStart(2,'0')+' Unit '+uNum+' · '+uName;
-  document.querySelectorAll('.top-sub').forEach(el=>el.textContent=sub);
+  document.querySelectorAll('.top-sub').forEach(function(el){el.textContent=sub;});
   goTo(screen);
+  if(screen==='summary') loadSummary(chNum,uNum);
+  if(screen==='blanks')  loadBlanks(chNum,uNum);
+  if(screen==='quiz')    loadQuiz(chNum,uNum,'easy');
+}
+
+// 내용정리 불러오기
+async function loadSummary(chNum,uNum){
+  var area=document.getElementById('summary-content');
+  area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-size:40px;margin-bottom:16px;">📖</div><div style="font-size:16px;color:var(--muted);">내용을 불러오는 중...</div></div>';
+  try{
+    var json=await callAPI({action:'generateContent',type:'summary',chapter:chNum,unit:uNum});
+    if(!json.ok||!json.data||json.data.error){
+      area.innerHTML='<div style="padding:20px;color:var(--red);">불러오기 실패: '+(json.data&&json.data.error||'다시 시도해주세요.')+'</div>';
+      return;
+    }
+    var points=json.data.points||[];
+    var html='<div style="padding-top:8px;">';
+    points.forEach(function(pt){
+      var tagStyle='background:var(--dark);color:#fff;';
+      if(pt.tag&&pt.tag.includes('1')) tagStyle='background:var(--dark);color:#fff;';
+      else if(pt.tag&&pt.tag.includes('2')) tagStyle='background:var(--purple-bg);color:var(--purple);border:2px solid var(--purple-border);';
+      else if(pt.tag&&pt.tag.includes('3')) tagStyle='background:var(--gold-bg);color:var(--gold);border:2px solid #fde8b5;';
+      else tagStyle='background:var(--red-bg);color:var(--red);border:2px solid #f5b7b1;';
+      html+='<div class="pt-card">';
+      html+='<div class="pt-head"><div class="pt-tag" style="'+tagStyle+'">'+pt.tag+'</div><strong style="font-size:15px;">'+pt.title+'</strong></div>';
+      html+='<div class="pt-body">';
+      if(pt.formula) html+='<div class="formula">'+pt.formula+'</div>';
+      if(pt.rule) html+='<div class="key-rule">'+pt.rule+'</div>';
+      if(pt.adverbs&&pt.adverbs.length){
+        html+='<div class="adv-grid">';
+        pt.adverbs.forEach(function(a){html+='<div class="adv-item"><div class="adv-en">'+a.en+'</div><div class="adv-kr">'+a.kr+'</div></div>';});
+        html+='</div>';
+      }
+      if(pt.examples&&pt.examples.length){
+        pt.examples.forEach(function(ex){
+          html+='<div class="ex-item"><div class="ex-en">'+ex.en+'</div><div class="ex-kr">'+ex.kr+'</div></div>';
+        });
+      }
+      if(pt.caution) html+='<div class="caution">'+pt.caution+'</div>';
+      html+='</div></div>';
+    });
+    html+='<button class="btn btn-blue" onclick="goToBlanks()">빈칸 채우기 시작</button>';
+    html+='<div class="spacer"></div></div>';
+    area.innerHTML=html;
+  } catch(err){
+    area.innerHTML='<div style="padding:20px;color:var(--red);">네트워크 오류. 다시 시도해주세요.</div>';
+  }
+}
+
+// 다음 단계 이동 헬퍼
+function goToBlanks(){
+  var u=window._unit;
+  if(u) selectUnit(u.chapter_num,u.chapter_name,u.unit_num,u.unit_name,'blanks');
+}
+function goToQuiz(){
+  var u=window._unit;
+  if(u) selectUnit(u.chapter_num,u.chapter_name,u.unit_num,u.unit_name,'quiz');
+}
+
+// 빈칸 채우기 불러오기
+async function loadBlanks(chNum,uNum){
+  var area=document.getElementById('blanks-content');
+  area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-size:40px;margin-bottom:16px;">✏️</div><div style="font-size:16px;color:var(--muted);">문제를 불러오는 중...</div></div>';
+  clearInterval(timerInt);secs=900;blankOk=0;tryCount={};wrongList=[];
+  timerInt=setInterval(function(){
+    secs--;
+    var m=Math.floor(secs/60),s=secs%60;
+    var el=document.getElementById('btimer');
+    if(el) el.textContent=m+':'+(s<10?'0':'')+s;
+    if(secs<=0){clearInterval(timerInt);alert('시간 초과!');}
+  },1000);
+  try{
+    var json=await callAPI({action:'generateContent',type:'blanks',chapter:chNum,unit:uNum});
+    if(!json.ok||!json.data||json.data.error){
+      area.innerHTML='<div style="padding:20px;color:var(--red);">불러오기 실패: '+(json.data&&json.data.error||'다시 시도해주세요.')+'</div>';
+      return;
+    }
+    var qs=json.data.questions||[];
+    window._answers=qs.map(function(q){return q.answer;});
+    var html='<div style="padding-top:8px;">';
+    html+='<div class="quiz-meta"><span class="q-count" id="bcount">1 / '+qs.length+'</span><span class="q-timer" id="btimer">15:00</span></div>';
+    qs.forEach(function(q,i){
+      var display=i===0?'block':'none';
+      html+='<div id="bq'+(i+1)+'" class="blank-card" style="display:'+display+';">';
+      html+='<div class="blank-num">Q'+(i+1)+' · '+q.point+'</div>';
+      html+='<div class="blank-hint">'+q.hint+'</div>';
+      // 빈칸(___)을 input으로 교체
+      var sent=q.sentence.replace('___','<input class="blank-input" id="bi'+(i+1)+'" placeholder="?">');
+      html+='<div class="blank-sent">'+sent+'</div>';
+      html+='<div class="blank-tr">'+q.translation+'</div>';
+      html+='<button class="check-btn" data-idx="'+(i+1)+'" data-total="'+qs.length+'" onclick="chkDynBtn(this)">확인</button>';
+      html+='<div class="fb" id="bf'+(i+1)+'"></div>';
+      html+='<div class="opts-area" id="opts'+(i+1)+'" style="display:none;"></div>';
+      html+='</div>';
+    });
+    html+='<div id="blank-done" style="display:none;text-align:center;padding:28px 0;">';
+    html+='<div style="font-size:48px;margin-bottom:12px;">✅</div>';
+    html+='<h3 style="font-size:20px;font-weight:900;margin-bottom:8px;">빈칸 완료!</h3>';
+    html+='<p style="color:var(--muted);font-size:14px;margin-bottom:22px;" id="blank-result"></p>';
+    html+='<button class="btn btn-blue" onclick="goToQuiz()">문제 풀기 시작</button>';
+    html+='</div>';
+    html+='<div class="spacer"></div></div>';
+    area.innerHTML=html;
+    // 진행바 업데이트
+    document.getElementById('bprog').style.width=(1/qs.length*100)+'%';
+    window._blankTotal=qs.length;
+  } catch(err){
+    area.innerHTML='<div style="padding:20px;color:var(--red);">네트워크 오류. 다시 시도해주세요.</div>';
+  }
+}
+
+// 동적 빈칸 버튼 클릭
+function chkDynBtn(btn){
+  var n     = parseInt(btn.getAttribute('data-idx'));
+  var total = parseInt(btn.getAttribute('data-total'));
+  var ans   = (window._answers&&window._answers[n-1])||'';
+  chkDyn(n, ans, 'bi'+n, 'bf'+n, total);
+}
+
+// 동적 빈칸 채크 (문제 수 가변)
+function chkDyn(n,ans,inId,fbId,total){
+  var inp=document.getElementById(inId);
+  var fb=document.getElementById(fbId);
+  var optsArea=document.getElementById('opts'+n);
+  var v=normalize(inp.value.trim());
+  var a=normalize(ans);
+  if(v===a){
+    inp.className='blank-input ok';
+    fb.className='fb ok';fb.style.display='block';
+    fb.textContent='✅ 정답! '+ans;
+    blankOk++;
+    if(optsArea) optsArea.style.display='none';
+    setTimeout(function(){
+      var next=n+1;
+      if(next<=total){
+        document.getElementById('bq'+next).style.display='block';
+        document.getElementById('bprog').style.width=(next/total*100)+'%';
+        document.getElementById('bcount').textContent=next+' / '+total;
+      } else {
+        clearInterval(timerInt);
+        document.getElementById('bq'+n).style.display='none';
+        document.getElementById('blank-done').style.display='block';
+        document.getElementById('blank-result').textContent=total+'문제 중 '+blankOk+'개 정답!';
+      }
+    },1300);
+  } else {
+    if(!tryCount[n]) tryCount[n]=0;
+    tryCount[n]++;
+    inp.className='blank-input ng';
+    if(tryCount[n]===1){
+      fb.className='fb ng';fb.style.display='block';
+      fb.textContent='❌ 다시 도전해보세요!';
+    } else if(tryCount[n]===2){
+      fb.className='fb ng';fb.style.display='block';
+      fb.textContent='❌ 힌트! 아래에서 골라보세요.';
+      showOpts(n,ans,inId,fbId);
+    } else {
+      if(!wrongList.find(function(w){return w.n===n;})) wrongList.push({n:n,ans:ans});
+      fb.className='fb ng';fb.style.display='block';
+      fb.innerHTML='❌ 정답: <strong>'+ans+'</strong>';
+      setTimeout(function(){
+        var next=n+1;
+        if(next<=total){
+          document.getElementById('bq'+next).style.display='block';
+          document.getElementById('bprog').style.width=(next/total*100)+'%';
+          document.getElementById('bcount').textContent=next+' / '+total;
+        } else {
+          clearInterval(timerInt);
+          document.getElementById('bq'+n).style.display='none';
+          document.getElementById('blank-done').style.display='block';
+          document.getElementById('blank-result').textContent=total+'문제 중 '+blankOk+'개 정답!';
+        }
+      },2000);
+    }
+  }
+}
+
+// 난이도 탭 변경
+function changeDiff(el){
+  var d=el.getAttribute('data-diff');
+  var u=window._unit;
+  if(u) loadQuiz(u.chapter_num,u.unit_num,d);
+}
+
+// 문제풀기 불러오기
+async function loadQuiz(chNum,uNum,diff){
+  var area=document.getElementById('quiz-content');
+  area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-size:40px;margin-bottom:16px;">📝</div><div style="font-size:16px;color:var(--muted);">문제를 불러오는 중...</div></div>';
+  var currentDiffLabel={'easy':'쉬움','medium':'보통','hard':'도전'}[diff]||'쉬움';
+  try{
+    var json=await callAPI({action:'generateContent',type:'quiz',chapter:chNum,unit:uNum,diff:diff});
+    if(!json.ok||!json.data||json.data.error){
+      area.innerHTML='<div style="padding:20px;color:var(--red);">불러오기 실패: '+(json.data&&json.data.error||'다시 시도해주세요.')+'</div>';
+      return;
+    }
+    var qs=json.data.questions||[];
+    window._answers=qs.map(function(q){return q.answer;});
+    var html='<div style="padding-top:8px;">';
+    // 난이도 탭
+    html+='<div class="diff-tabs">';
+    ['easy','medium','hard'].forEach(function(d){
+      var labels={'easy':'쉬움','medium':'보통','hard':'도전'};
+      var icons={'easy':'🟢','medium':'🟡','hard':'🔴'};
+      var on=d===diff?' '+(d==='easy'?'e-on':d==='medium'?'m-on':'h-on'):'';
+      html+='<div class="diff-tab'+on+'" data-diff="'+d+'" onclick="changeDiff(this)">';
+      html+='<div class="di">'+icons[d]+'</div><div class="dl">'+labels[d]+'</div><div class="dc">10문제</div></div>';
+    });
+    html+='</div>';
+    html+='<div class="q-info-bar">'+({'easy':'🟢','medium':'🟡','hard':'🔴'}[diff])+' '+currentDiffLabel+' 난이도 <span>'+qs.length+'문제</span></div>';
+    qs.forEach(function(q){
+      html+='<div class="q-card">';
+      html+='<div class="q-badge">'+q.type+'</div>';
+      html+='<div class="q-text">'+q.num+'. '+q.question+'</div>';
+      if(q.options&&q.options.length){
+        html+='<div class="opts" id="qg'+q.num+'">';
+        q.options.forEach(function(opt,i){
+          var isCorrect=(i+1)===q.answer;
+          html+='<div class="opt" data-correct="'+isCorrect+'" onclick="poDyn(this,\'qg'+q.num+'\')">';
+          html+='<div class="opt-n">'+(i+1)+'</div>'+opt+'</div>';
+        });
+        html+='</div>';
+      }
+      if(q.hint) html+='<div class="hint-box">'+q.hint+'</div>';
+      html+='</div>';
+    });
+    html+='<div class="next-diff-area" id="next-diff-area" style="display:none;">';
+    html+='<button class="btn btn-blue" id="next-diff-btn" onclick="goNextDiff()">다음 단계로 →</button></div>';
+    html+='<button class="btn btn-outline" style="margin-top:10px;" onclick="goTo(\"result\")">결과 보기</button>';
+    html+='<div class="spacer"></div></div>';
+    area.innerHTML=html;
+    window._currentDiff=diff;
+    window._quizTotal=qs.length;
+  } catch(err){
+    area.innerHTML='<div style="padding:20px;color:var(--red);">네트워크 오류. 다시 시도해주세요.</div>';
+  }
 }
 
 // Chapter 선택 (설명/정리)
@@ -1347,14 +1403,13 @@ function sDiff(d){
 }
 
 function goNextDiff(){
-  if(currentDiff==='e'){
-    const t=document.getElementById('tab-m');
-    t.classList.remove('locked-tab');
-    sDiff('m');
-  } else if(currentDiff==='m'){
-    const t=document.getElementById('tab-h');
-    t.classList.remove('locked-tab');
-    sDiff('h');
+  var diff=window._currentDiff||'easy';
+  if(diff==='easy'){
+    window._currentDiff='medium';
+    loadQuiz(window._unit.chapter_num,window._unit.unit_num,'medium');
+  } else if(diff==='medium'){
+    window._currentDiff='hard';
+    loadQuiz(window._unit.chapter_num,window._unit.unit_num,'hard');
   } else {
     goTo('result');
   }
@@ -1362,22 +1417,29 @@ function goNextDiff(){
 }
 
 function checkDiffComplete(){
-  const qDiv=document.getElementById('q'+currentDiff);
-  const allOpts=qDiv.querySelectorAll('.opts');
-  let answered=0;
-  allOpts.forEach(o=>{if(o.querySelector('.right,.wrong'))answered++;});
+  var area2=document.getElementById('quiz-content');
+  if(!area2) return;
+  var allOpts=area2.querySelectorAll('.opts');
+  var answered=0;
+  allOpts.forEach(function(o){if(o.querySelector('.right,.wrong'))answered++;});
   if(answered>=allOpts.length&&allOpts.length>0){
-    let correct=0;
-    allOpts.forEach(o=>{if(o.querySelector('.right'))correct++;});
-    quizScores[currentDiff]=correct;
-    const area=document.getElementById('next-diff-area');
-    const btn=document.getElementById('next-diff-btn');
-    area.style.display='block';
-    if(currentDiff==='h'){btn.textContent='결과 보기 →';}
-    else if(currentDiff==='e'){btn.textContent='보통 단계로 → ('+correct+'/'+allOpts.length+'개 맞음)';}
-    else{btn.textContent='도전 단계로 → ('+correct+'/'+allOpts.length+'개 맞음)';}
-    area.scrollIntoView({behavior:'smooth'});
+    var correct=0;
+    allOpts.forEach(function(o){if(o.querySelector('.right'))correct++;});
+    var nextArea=document.getElementById('next-diff-area');
+    var nextBtn=document.getElementById('next-diff-btn');
+    if(!nextArea||!nextBtn) return;
+    nextArea.style.display='block';
+    var diff=window._currentDiff||'easy';
+    if(diff==='hard'){nextBtn.textContent='결과 보기 →';}
+    else if(diff==='easy'){nextBtn.textContent='보통 단계로 → ('+correct+'/'+allOpts.length+'개 맞음)';}
+    else{nextBtn.textContent='도전 단계로 → ('+correct+'/'+allOpts.length+'개 맞음)';}
+    nextArea.scrollIntoView({behavior:'smooth'});
   }
+}
+
+function poDyn(el,gid){
+  var ok = el.getAttribute('data-correct')==='true';
+  po(el,gid,ok);
 }
 
 function po(el,gid,ok){
