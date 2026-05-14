@@ -805,7 +805,7 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);min-hei
 </div>
 
 <script>
-const API_URL='https://script.google.com/macros/s/AKfycbwcsmW-CO5zc7-fSO5sLGdIInALpR-BG4reZucghxYh8x_AbQRuNdZxRgRAm_s50YSo/exec';
+const API_URL='https://script.google.com/macros/s/AKfycby6-sl59WdanXr-DbLtIfx0RK074w5UqRmuj27wYdrmKaKdIwcv97KXjHnYDwF2hs-J/exec';
 
 // 캡쳐 방지 (개발 완료 후 주석 해제)
 // document.addEventListener('keydown',e=>{if(e.key==='PrintScreen'||(e.ctrlKey&&e.key==='p')){e.preventDefault();showCap();}});
@@ -826,7 +826,7 @@ function callAPI(params){
     const cb='cb_'+Date.now();
     const url=API_URL+'?'+Object.entries(params).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&')+'&callback='+cb;
     const script=document.createElement('script');
-    const timer=setTimeout(()=>{delete window[cb];document.body.removeChild(script);reject(new Error('timeout'));},10000);
+    const timer=setTimeout(()=>{delete window[cb];document.body.removeChild(script);reject(new Error('timeout'));},30000);
     window[cb]=(data)=>{clearTimeout(timer);delete window[cb];document.body.removeChild(script);resolve(data);};
     script.src=url;
     script.onerror=()=>{clearTimeout(timer);delete window[cb];reject(new Error('error'));};
