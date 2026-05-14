@@ -1036,7 +1036,7 @@ async function loadSummary(chNum,uNum){
   var area=document.getElementById('summary-content');
   area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-size:40px;margin-bottom:16px;">📖</div><div style="font-size:16px;color:var(--muted);">내용을 불러오는 중...</div></div>';
   try{
-    var json=await callAPI({action:'generateContent',type:'summary',chapter:chNum,unit:uNum});
+   var json=await callAPI({action:'generateContent',type:'summary',chapter:chNum,unit:uNum,chapter_name:window._unit.chapter_name,unit_name:window._unit.unit_name});
     if(!json.ok||!json.data||json.data.error){
       area.innerHTML='<div style="padding:20px;color:var(--red);">불러오기 실패: '+(json.data&&json.data.error||'다시 시도해주세요.')+'</div>';
       return;
@@ -1098,7 +1098,7 @@ async function loadBlanks(chNum,uNum){
     if(secs<=0){clearInterval(timerInt);alert('시간 초과!');}
   },1000);
   try{
-    var json=await callAPI({action:'generateContent',type:'blanks',chapter:chNum,unit:uNum});
+   var json=await callAPI({action:'generateContent',type:'blanks',chapter:chNum,unit:uNum,chapter_name:window._unit.chapter_name,unit_name:window._unit.unit_name});
     if(!json.ok||!json.data||json.data.error){
       area.innerHTML='<div style="padding:20px;color:var(--red);">불러오기 실패: '+(json.data&&json.data.error||'다시 시도해주세요.')+'</div>';
       return;
@@ -1216,7 +1216,7 @@ async function loadQuiz(chNum,uNum,diff){
   area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-size:40px;margin-bottom:16px;">📝</div><div style="font-size:16px;color:var(--muted);">문제를 불러오는 중...</div></div>';
   var currentDiffLabel={'easy':'쉬움','medium':'보통','hard':'도전'}[diff]||'쉬움';
   try{
-    var json=await callAPI({action:'generateContent',type:'quiz',chapter:chNum,unit:uNum,diff:diff});
+   var json=await callAPI({action:'generateContent',type:'quiz',chapter:chNum,unit:uNum,diff:diff,chapter_name:window._unit.chapter_name,unit_name:window._unit.unit_name});
     if(!json.ok||!json.data||json.data.error){
       area.innerHTML='<div style="padding:20px;color:var(--red);">불러오기 실패: '+(json.data&&json.data.error||'다시 시도해주세요.')+'</div>';
       return;
