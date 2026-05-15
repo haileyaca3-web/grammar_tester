@@ -226,6 +226,7 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);min-hei
 .rec-wrap{background:var(--white);border:2px dashed var(--border);border-radius:16px;padding:28px 20px;text-align:center;margin-bottom:14px;}
 .rec-btn{width:76px;height:76px;border-radius:50%;background:var(--blue);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:30px;line-height:1;box-shadow:0 4px 16px rgba(44,111,181,.3);}
 .rec-btn.on{background:var(--red);animation:pulse 1.5s infinite;}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .rec-status{font-size:14px;color:var(--muted);margin-bottom:5px;}
 .rec-timer{font-size:26px;font-weight:900;color:var(--dark);}
@@ -1034,7 +1035,7 @@ function selectUnit(chNum,chName,uNum,uName,screen){
 // 내용정리 불러오기
 async function loadSummary(chNum,uNum){
   var area=document.getElementById('summary-content');
-  area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-size:40px;margin-bottom:16px;">📖</div><div style="font-size:16px;color:var(--muted);">내용을 불러오는 중...</div></div>';
+  area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="width:50px;height:50px;border:5px solid #e0ecf8;border-top-color:#2c6fb5;border-radius:50%;margin:0 auto 20px;animation:spin 0.8s linear infinite;"></div><div style="font-size:17px;font-weight:800;color:#1a3a5c;margin-bottom:8px;">문법 내용을 정리하고 있어요...</div><div style="font-size:13px;color:#8a9ab0;line-height:1.6;">AI가 분석 중이에요<br>잠시만 기다려주세요 (약 10초)</div></div>';
   try{
    var json=await callAPI({action:'generateContent',type:'summary',chapter:chNum,unit:uNum,chapter_name:window._unit.chapter_name,unit_name:window._unit.unit_name});
     if(!json.ok||!json.data||json.data.error){
@@ -1088,7 +1089,7 @@ function goToQuiz(){
 // 빈칸 채우기 불러오기
 async function loadBlanks(chNum,uNum){
   var area=document.getElementById('blanks-content');
-  area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-size:40px;margin-bottom:16px;">✏️</div><div style="font-size:16px;color:var(--muted);">문제를 불러오는 중...</div></div>';
+area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="width:50px;height:50px;border:5px solid #e0ecf8;border-top-color:#f5a623;border-radius:50%;margin:0 auto 20px;animation:spin 0.8s linear infinite;"></div><div style="font-size:17px;font-weight:800;color:#1a3a5c;margin-bottom:8px;">빈칸 문제를 만들고 있어요...</div><div style="font-size:13px;color:#8a9ab0;line-height:1.6;">AI가 10문제를 출제 중이에요<br>잠시만 기다려주세요 (약 10초)</div></div>';
   clearInterval(timerInt);secs=900;blankOk=0;tryCount={};wrongList=[];
   timerInt=setInterval(function(){
     secs--;
@@ -1213,7 +1214,7 @@ function changeDiff(el){
 // 문제풀기 불러오기
 async function loadQuiz(chNum,uNum,diff){
   var area=document.getElementById('quiz-content');
-  area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-size:40px;margin-bottom:16px;">📝</div><div style="font-size:16px;color:var(--muted);">문제를 불러오는 중...</div></div>';
+area.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="width:50px;height:50px;border:5px solid #e0ecf8;border-top-color:#e74c3c;border-radius:50%;margin:0 auto 20px;animation:spin 0.8s linear infinite;"></div><div style="font-size:17px;font-weight:800;color:#1a3a5c;margin-bottom:8px;">문제를 만들고 있어요...</div><div style="font-size:13px;color:#8a9ab0;line-height:1.6;">AI가 난이도에 맞는 문제를 출제 중이에요<br>잠시만 기다려주세요 (약 10초)</div></div>';
   var currentDiffLabel={'easy':'쉬움','medium':'보통','hard':'도전'}[diff]||'쉬움';
   try{
    var json=await callAPI({action:'generateContent',type:'quiz',chapter:chNum,unit:uNum,diff:diff,chapter_name:window._unit.chapter_name,unit_name:window._unit.unit_name});
